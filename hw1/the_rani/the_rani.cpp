@@ -103,6 +103,7 @@ void TheRani::execute(const string& line) {
             subject_history[0] = new string[subject_counts]; // start a new experiment pool
             current_order[0] = new int[subject_counts];
             for (int i=0; i<subject_counts; i++){
+                subject_history[0][i] = "";
                 current_order[0][i] = i;
             }
         }
@@ -145,6 +146,7 @@ void TheRani::execute(const string& line) {
             subject_history[experiment_count] = new string[subject_counts]; // add a new experiment to the pool
             current_order[experiment_count] = new int[subject_counts];
             for (int i=0; i<subject_counts; i++){
+                subject_history[experiment_count][i] = "";
                 current_order[experiment_count][i] = -1; // -1 means that subject i is not in this experiment
             }
         }
@@ -159,8 +161,8 @@ void TheRani::execute(const string& line) {
             if ((!(stream >> double_x >> double_y >> double_n >> double_m)) && (!stream.fail())){
                 throw runtime_error("expected integer argument");
             }
-            else if ((ceil(double_x) != floor(double_x)) || (ceil(double_y) != floor(double_y)) 
-                || (ceil(double_n) != floor(double_n)) || (ceil(double_m) != floor(double_m))){
+            else if ((!stream.fail()) && ((ceil(double_x) != floor(double_x)) || (ceil(double_y) != floor(double_y)) 
+                || (ceil(double_n) != floor(double_n)) || (ceil(double_m) != floor(double_m)))){
                     throw runtime_error("expected integer argument");
             }
             else if (stream.fail()){
@@ -216,7 +218,7 @@ void TheRani::execute(const string& line) {
         if (!start)
             {throw runtime_error("no subjects yet");}
         else{
-            int subject_number; // use to find the number of subject
+            int subject_number = 0; // use to find the number of subject
             int x, n;
             double double_x, double_n;
 
@@ -236,17 +238,31 @@ void TheRani::execute(const string& line) {
                 throw runtime_error("argument out of range");
             }
 
+            int max_order = -1; // check if the subject is in this experiment
+            for (int i=0; i<subject_counts; i++){
+                if (current_order[x][i] > max_order){
+                    max_order = current_order[x][i];
+                }
+            }
+            if (max_order < n){
+                throw runtime_error("argument out of range");
+            }
+
             for (int i=0; i<subject_counts; i++){
                 if (current_order[x][i] == n){
                     subject_number = i; // find the subject number
                 }
             }
-
             output << subject_history[x][subject_number] << "\n";
         }
     }
     else
-        {throw runtime_error("command does not exist");}
+        if (!start){
+            throw runtime_error("no subjects yet");
+        }
+        else{
+            throw runtime_error("command does not exist");
+        }
 
 }
 
