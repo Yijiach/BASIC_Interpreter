@@ -69,20 +69,20 @@ void TheRani::execute(const string& line) {
     stream >> command;          // Read the first word, which is the command
     if (command == "START") {   // This code should be edited for error checking
         int subject_pool_count;
-        double double_pool_count;
-        if (!(stream >> double_pool_count)){
+        double double_pool_count = 0;
+        if ((!(stream >> double_pool_count)) && (!stream.fail())){
             throw runtime_error("expected integer argument");
         }
-         if (ceil(double_pool_count) != floor(double_pool_count)){
+         if ((ceil(double_pool_count) != floor(double_pool_count)) && (!stream.fail())){
             throw runtime_error("expected integer argument");
         }
-
-        subject_pool_count = (int)double_pool_count;
 
         if (stream.fail()){
             throw runtime_error("too few arguments");
         }
-        else if (subject_pool_count < 0) {
+
+        subject_pool_count = (int)double_pool_count;
+        if (subject_pool_count < 0) {
             throw runtime_error("argument out of range");
         }
         // Your code here
@@ -161,8 +161,10 @@ void TheRani::execute(const string& line) {
             if ((!(stream >> double_x >> double_y >> double_n >> double_m)) && (!stream.fail())){
                 throw runtime_error("expected integer argument");
             }
-            else if ((!stream.fail()) && ((ceil(double_x) != floor(double_x)) || (ceil(double_y) != floor(double_y)) 
-                || (ceil(double_n) != floor(double_n)) || (ceil(double_m) != floor(double_m)))){
+            else if ((!stream.fail()) && ((ceil(double_x) != floor(double_x)) 
+                || (ceil(double_y) != floor(double_y)) 
+                || (ceil(double_n) != floor(double_n)) 
+                || (ceil(double_m) != floor(double_m)))){
                     throw runtime_error("expected integer argument");
             }
             else if (stream.fail()){
@@ -173,17 +175,22 @@ void TheRani::execute(const string& line) {
             n = (int)double_n;
             m = (int)double_m;
 
-            if ((x > experiment_count) || (y > experiment_count) || (n >= subject_counts) || (m >= subject_counts)
+            if ((x > experiment_count) || (y > experiment_count) 
+                || (n >= subject_counts) || (m >= subject_counts)
                 || (x < 0) || (y < 0) || (n < 0) || (m < 0)){
                 throw runtime_error("argument out of range");
             }
-            if (n > m){
-                throw runtime_error("invalid range of subjects to move");
-            }
-
             for (int i=n; i<=m; i++){
-                 if (current_order[x][i] == -1){
-                     throw runtime_error("argument out of range");
+                if (current_order[x][i] == -1){
+                    throw runtime_error("argument out of range");
+                }
+            }
+            if (n > m){
+                if (current_order[x][n] == -1){
+                    throw runtime_error("argument out of range");
+                }
+                else{
+                    throw runtime_error("invalid range of subjects to move");
                 }
             }
 
