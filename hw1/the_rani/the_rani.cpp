@@ -172,19 +172,22 @@ void TheRani::execute(const string& line) {
                     string dummy = "";
                     stream >> dummy;
                     if (dummy != ""){
-                        throw runtime_error("expected integer argument");
+                         throw runtime_error("expected integer argument");
                     }
                 }
             }
-            else if ((!stream.fail()) && ((ceil(double_x) != floor(double_x)) 
+
+            if ((!stream.fail()) && ((ceil(double_x) != floor(double_x)) 
                 || (ceil(double_y) != floor(double_y)) 
                 || (ceil(double_n) != floor(double_n)) 
                 || (ceil(double_m) != floor(double_m)))){
                     throw runtime_error("expected integer argument");
             }
-            else if (stream.fail()){
+
+            if (stream.fail()){
                 throw runtime_error("too few arguments");
             }
+
             x = (int)double_x;
             y = (int)double_y;
             n = (int)double_n;
@@ -256,11 +259,11 @@ void TheRani::execute(const string& line) {
                     }
                 }
             }
-            else if (((ceil(double_x) != floor(double_x)) || (ceil(double_n) != floor(double_n))) 
+            if (((ceil(double_x) != floor(double_x)) || (ceil(double_n) != floor(double_n))) 
                 && (!stream.fail())){
                     throw runtime_error("expected integer argument");
             }
-            else if (stream.fail()){
+            if (stream.fail()){
                 throw runtime_error("too few arguments");
             }
             x = (int)double_x;
