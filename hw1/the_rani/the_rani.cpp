@@ -70,9 +70,17 @@ void TheRani::execute(const string& line) {
     if (command == "START") {   // This code should be edited for error checking
         int subject_pool_count;
         double double_pool_count = 0;
-        if ((!(stream >> double_pool_count)) && (!stream.fail())){
-            throw runtime_error("expected integer argument");
+        if (!(stream >> double_pool_count)){
+            if (stream.fail()){
+                stream.clear();
+                string dummy = "";
+                stream >> dummy;
+                if (dummy != ""){
+                    throw runtime_error("expected integer argument");
+                }
+            }
         }
+
          if ((ceil(double_pool_count) != floor(double_pool_count)) && (!stream.fail())){
             throw runtime_error("expected integer argument");
         }
@@ -158,8 +166,15 @@ void TheRani::execute(const string& line) {
             int max_order = -1; // use it for ordering
             int x, y, n, m;
             double double_x, double_y, double_n, double_m;
-            if ((!(stream >> double_x >> double_y >> double_n >> double_m)) && (!stream.fail())){
-                throw runtime_error("expected integer argument");
+            if (!(stream >> double_x >> double_y >> double_n >> double_m)){
+                if (stream.fail()){
+                    stream.clear();
+                    string dummy = "";
+                    stream >> dummy;
+                    if (dummy != ""){
+                        throw runtime_error("expected integer argument");
+                    }
+                }
             }
             else if ((!stream.fail()) && ((ceil(double_x) != floor(double_x)) 
                 || (ceil(double_y) != floor(double_y)) 
@@ -186,11 +201,13 @@ void TheRani::execute(const string& line) {
                 }
             }
             if (n > m){
-                if (current_order[x][n] == -1){
-                    throw runtime_error("argument out of range");
-                }
-                else{
-                    throw runtime_error("invalid range of subjects to move");
+                for (int i=m; i<=n; i++){
+                    if (current_order[x][n] == -1){
+                        throw runtime_error("argument out of range");
+                    }
+                    else{
+                        throw runtime_error("invalid range of subjects to move");
+                    }
                 }
             }
 
@@ -230,9 +247,17 @@ void TheRani::execute(const string& line) {
             double double_x, double_n;
 
             if (!(stream >> double_x >> double_n)){
-                throw runtime_error("expected integer argument");
+                if (stream.fail()){
+                    stream.clear();
+                    string dummy = "";
+                    stream >> dummy;
+                    if (dummy != ""){
+                        throw runtime_error("expected integer argument");
+                    }
+                }
             }
-            else if ((ceil(double_x) != floor(double_x)) || (ceil(double_n) != floor(double_n))){
+            else if (((ceil(double_x) != floor(double_x)) || (ceil(double_n) != floor(double_n))) 
+                && (!stream.fail())){
                     throw runtime_error("expected integer argument");
             }
             else if (stream.fail()){
