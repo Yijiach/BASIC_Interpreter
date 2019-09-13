@@ -122,8 +122,15 @@ void TheRani::execute(const string& line) {
                 throw runtime_error("no subjects yet");
         }
         else{
-            string temp_history[experiment_count+1][subject_counts];
-            int tmep_order[experiment_count+1][subject_counts];
+            // string temp_history[experiment_count+1][subject_counts];
+            // int tmep_order[experiment_count+1][subject_counts];
+            string **temp_history = new string*[experiment_count+1];
+            int **tmep_order = new int*[experiment_count+1];
+            for (int i=0; i<experiment_count+1; i++){
+                temp_history[i] = new string[subject_counts];
+                tmep_order[i] = new int[subject_counts];
+            }
+            
             for (int i=0; i<=experiment_count; i++){
                 for (int j=0; j<subject_counts; j++){
                     temp_history[i][j] = subject_history[i][j];
@@ -150,6 +157,15 @@ void TheRani::execute(const string& line) {
                     current_order[i][j] = tmep_order[i][j];
                 }
             }
+
+            // delete temps
+            for (int i=0; i<experiment_count+1; i++){
+                delete []temp_history[i];
+                delete []tmep_order[i];
+            }
+            delete []temp_history;
+            delete []tmep_order;
+
             experiment_count++;
             subject_history[experiment_count] = new string[subject_counts]; // add a new experiment to the pool
             current_order[experiment_count] = new int[subject_counts];
@@ -261,8 +277,8 @@ void TheRani::execute(const string& line) {
                       }
                     ordering++;
                 }
-                int move_temp_subject[max_order_y-n+1];
-                int move_temp_order[max_order_y-n+1];
+                int *move_temp_subject = new int[max_order_y-n+1];
+                int *move_temp_order = new int[max_order_y-n+1];
                 for (int i=0; i<max_order_y-n+1; i++){ // initialize
                     move_temp_subject[i] = -1;
                     move_temp_order[i] = -1;
@@ -278,6 +294,8 @@ void TheRani::execute(const string& line) {
                 for (int i=0; i<max_order_y-n+1; i++){
                     current_order[y][move_temp_subject[i]] = move_temp_order[i];
                 }
+                delete []move_temp_subject;
+                delete []move_temp_order;
             }
         }
     } // if MOVE
