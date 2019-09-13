@@ -130,7 +130,7 @@ void TheRani::execute(const string& line) {
                 temp_history[i] = new string[subject_counts];
                 tmep_order[i] = new int[subject_counts];
             }
-            
+
             for (int i=0; i<=experiment_count; i++){
                 for (int j=0; j<subject_counts; j++){
                     temp_history[i][j] = subject_history[i][j];
@@ -167,11 +167,13 @@ void TheRani::execute(const string& line) {
             delete []tmep_order;
 
             experiment_count++;
-            subject_history[experiment_count] = new string[subject_counts]; // add a new experiment to the pool
+            // add a new experiment to the pool
+            subject_history[experiment_count] = new string[subject_counts]; 
             current_order[experiment_count] = new int[subject_counts];
             for (int i=0; i<subject_counts; i++){
                 subject_history[experiment_count][i] = "";
-                current_order[experiment_count][i] = -1; // -1 means that subject i is not in this experiment
+                // -1 means that subject i is not in this experiment
+                current_order[experiment_count][i] = -1;
             }
         }
     }
@@ -215,7 +217,8 @@ void TheRani::execute(const string& line) {
 
             for (int i=0; i<subject_counts; i++){
                 if (current_order[x][i] > max_order_x)
-                    {max_order_x = current_order[x][i];} // find the max order number in previous experiment
+                    // find the max order number in previous experiment
+                    {max_order_x = current_order[x][i];}
             }
 
             if ((n > max_order_x) || (m > max_order_x)){
@@ -229,7 +232,8 @@ void TheRani::execute(const string& line) {
 
             for (int i=0; i<subject_counts; i++){
                 if (current_order[y][i] > max_order_y)
-                    {max_order_y = current_order[y][i];} // find the max order number in current experiment
+                    // find the max order number in current experiment
+                    {max_order_y = current_order[y][i];}
             }
 
             for (int i=n; i<=m; i++){
@@ -268,7 +272,8 @@ void TheRani::execute(const string& line) {
                     }
                 }
             }
-            else if ((x == y) && (m < max_order_y)){ //x == y case: do nothing if n-m are the only subjects
+            //x == y case: do nothing if n-m are the only subjects
+            else if ((x == y) && (m < max_order_y)){ 
                  for (int i=n; i<=m; i++){
                     for (int j=0; j<subject_counts; j++){
                         if (current_order[y][j] == i){
