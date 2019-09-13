@@ -27,7 +27,8 @@ private:
     int** current_order;
     bool start; // check if started
     // Called in the main method
-    void execute(const string& line); // keeps track of order of subjects in current experiment
+    // keeps track of order of subjects in current experiment
+    void execute(const string& line); 
 
     // Possible helper: deallocate all current members
 };

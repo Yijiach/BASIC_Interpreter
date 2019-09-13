@@ -28,4 +28,5 @@ Yijia Chen hw#01
 	fun_problem.txt: unmodified
 	fun_problem has no contents because checkout deletes them.
 (f) README.md: modified
-	Explanation: Because "fancy git move" was added to README.md file, so it's modified.
+	Explanation: Because "fancy git move" was added to 
+	README.md file, so it's modified.
