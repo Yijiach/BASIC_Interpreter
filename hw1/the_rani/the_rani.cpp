@@ -58,7 +58,8 @@ void TheRani::main() {
             this->execute(line);
         } catch(exception& e) {
             // If you use exceptions, make sure the line number is printed here
-            this->output << "Error on line " << line_number <<": " << e.what() << endl;
+            this->output << "Error on line " << 
+            line_number <<": " << e.what() << endl;
         } 
     }
 }
@@ -82,7 +83,8 @@ void TheRani::execute(const string& line) {
             }
         }
 
-         if ((ceil(double_pool_count) != floor(double_pool_count)) && (!stream.fail())){
+         if ((ceil(double_pool_count) != 
+            floor(double_pool_count)) && (!stream.fail())){
             throw runtime_error("expected integer argument");
         }
 
@@ -109,7 +111,8 @@ void TheRani::execute(const string& line) {
             experiment_count = 0;
             subject_history = new string*[1];
             current_order = new int*[1];
-            subject_history[0] = new string[subject_counts]; // start a new experiment pool
+            // start a new experiment pool
+            subject_history[0] = new string[subject_counts]; 
             current_order[0] = new int[subject_counts];
             for (int i=0; i<subject_counts; i++){
                 subject_history[0][i] = "";
@@ -247,7 +250,8 @@ void TheRani::execute(const string& line) {
                             subject_history[y][j] = to_string(y);
                         }
                         else{
-                            subject_history[y][j] = subject_history[x][j] + " " + to_string(y);
+                            subject_history[y][j] = 
+                            subject_history[x][j] + " " + to_string(y);
                         }
                     }
                 }
@@ -325,14 +329,16 @@ void TheRani::execute(const string& line) {
                 throw runtime_error("expected integer argument");
             }
 
-            if (((ceil(double_x) != floor(double_x)) || (ceil(double_n) != floor(double_n))) 
+            if (((ceil(double_x) != floor(double_x)) || 
+                (ceil(double_n) != floor(double_n))) 
                 && (!stream.fail())){
                     throw runtime_error("expected integer argument");
             }
             x = (int)double_x;
             n = (int)double_n;
 
-            if ((x > experiment_count) || (n >= subject_counts) || (x < 0) || (n < 0)){
+            if ((x > experiment_count) || (n >= subject_counts) 
+                || (x < 0) || (n < 0)){
                 throw runtime_error("argument out of range");
             }
 
