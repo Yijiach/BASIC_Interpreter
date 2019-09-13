@@ -1,29 +1,19 @@
-Error on line 1: too few arguments
-Error on line 2: no subjects yet
-Error on line 3: no subjects yet
-Error on line 4: no subjects yet
-Error on line 5: no subjects yet
-Error on line 6: no subjects yet
-Error on line 7: no subjects yet
-Error on line 8: no subjects yet
-Error on line 9: no subjects yet
-1 1 1
-1 1 1
-Error on line 17: too few arguments
-Error on line 18: argument out of range
+Error on line 4: command does not exist
+Error on line 5: expected integer argument
+1
+Error on line 8: argument out of range
+Error on line 9: expected integer argument
+Error on line 12: too few arguments
+Error on line 13: argument out of range
+Error on line 15: argument out of range
+Error on line 16: invalid range of subjects to move
+
+1
 Error on line 19: argument out of range
 Error on line 20: argument out of range
 Error on line 21: argument out of range
 Error on line 22: argument out of range
-Error on line 23: argument out of range
-1 1 1
-Error on line 25: argument out of range
-1 1 1
-Error on line 27: argument out of range
-Error on line 28: argument out of range
-Error on line 29: argument out of range
-Error on line 30: argument out of range
-1 1 1
-Error on line 32: argument out of range
-Error on line 33: expected integer argument
-Error on line 34: expected integer argument
+1
+1
+1
+1

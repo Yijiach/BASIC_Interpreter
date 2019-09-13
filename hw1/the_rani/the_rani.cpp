@@ -163,18 +163,20 @@ void TheRani::execute(const string& line) {
         if (!start)
             {throw runtime_error("no subjects yet");}
         else {
-            int max_order = -1; // use it for ordering
+            int max_order_x = -1;
+            int max_order_y = -1;
             int x, y, n, m;
             double double_x, double_y, double_n, double_m;
-            if (!(stream >> double_x >> double_y >> double_n >> double_m)){
-                if (stream.fail()){
-                    stream.clear();
-                    string dummy = "";
-                    stream >> dummy;
-                    if (dummy != ""){
-                         throw runtime_error("expected integer argument");
-                    }
+            // check argument number
+            string buf = "";
+            stringstream check_argument_number(line);
+            for (int i=0; i<5; i++){
+                if (!(check_argument_number >> buf)){
+                    throw runtime_error("too few arguments");
                 }
+            }
+            if (!(stream >> double_x >> double_y >> double_n >> double_m)){
+                throw runtime_error("expected integer argument");
             }
 
             if ((!stream.fail()) && ((ceil(double_x) != floor(double_x)) 
@@ -182,10 +184,6 @@ void TheRani::execute(const string& line) {
                 || (ceil(double_n) != floor(double_n)) 
                 || (ceil(double_m) != floor(double_m)))){
                     throw runtime_error("expected integer argument");
-            }
-
-            if (stream.fail()){
-                throw runtime_error("too few arguments");
             }
 
             x = (int)double_x;
@@ -198,49 +196,92 @@ void TheRani::execute(const string& line) {
                 || (x < 0) || (y < 0) || (n < 0) || (m < 0)){
                 throw runtime_error("argument out of range");
             }
-            for (int i=n; i<=m; i++){
-                if (current_order[x][i] == -1){
-                    throw runtime_error("argument out of range");
-                }
+
+            for (int i=0; i<subject_counts; i++){
+                if (current_order[x][i] > max_order_x)
+                    {max_order_x = current_order[x][i];} // find the max order number in previous experiment
             }
+
+            if ((n > max_order_x) || (m > max_order_x)){
+                throw runtime_error("argument out of range");
+            }
+
             if (n > m){
-                for (int i=m; i<=n; i++){
-                    if (current_order[x][n] == -1){
-                        throw runtime_error("argument out of range");
-                    }
-                    else{
-                        throw runtime_error("invalid range of subjects to move");
-                    }
-                }
+                throw runtime_error("invalid range of subjects to move");
+
             }
 
             for (int i=0; i<subject_counts; i++){
-                if (current_order[y][i] > max_order)
-                    {max_order = current_order[y][i];} // find the max order number in current experiment
+                if (current_order[y][i] > max_order_y)
+                    {max_order_y = current_order[y][i];} // find the max order number in current experiment
+            }
+
+            for (int i=n; i<=m; i++){
+                for (int j=0; j<subject_counts; j++){
+                    if (current_order[x][j] == i){
+                        if (y == 0){
+                            subject_history[y][j] = subject_history[x][j];
+                        }
+                        else if (subject_history[x][j] == ""){
+                            subject_history[y][j] = to_string(y);
+                        }
+                        else{
+                            subject_history[y][j] = subject_history[x][j] + " " + to_string(y);
+                        }
+                    }
+                }
             }
 
             int ordering = 1; // initialize the new ordering
-            for (int i=n; i<=m; i++){
-                if (x != 0){
-                    subject_history[y][i] = subject_history[x][i] + " " + to_string(y);
+            int temp_j = -1; // record j
+            // x != y case ordering
+            if ( x != y){
+                for (int i=n; i<=m; i++){
+                    for (int j=0; j<subject_counts; j++){
+                        if (current_order[x][j] == i){
+                            current_order[y][j] = max_order_y + ordering;
+                            temp_j = j;
+                        }
+                    }
+                    current_order[x][temp_j] = -1;
+                    ordering++;
                 }
-                else{
-                    subject_history[y][i] = to_string(y);
-                }
-                current_order[y][i] =  max_order + ordering; // insert after the max order number
-                ordering++;
-                if (x != y){
-                    current_order[x][i] = -1; // those subjects are removed, order is -1
+                for (int i=0; i<subject_counts; i++){
+                    if (current_order[x][i] > m){
+                        current_order[x][i] -= (m-n+1);
+                    }
                 }
             }
-
-            for (int i=m+1; i<subject_counts; i++){
-                if (current_order[x][i] != -1){
-                    current_order[x][i] -= (m-n+1); // some subjects are removed, order must be changed
+            else if ((x == y) && (m < max_order_y)){ //x == y case: do nothing if n-m are the only subjects
+                 for (int i=n; i<=m; i++){
+                    for (int j=0; j<subject_counts; j++){
+                        if (current_order[y][j] == i){
+                            current_order[y][j] = max_order_y + ordering;
+                        }
+                      }
+                    ordering++;
+                }
+                int move_temp_subject[max_order_y-n+1];
+                int move_temp_order[max_order_y-n+1];
+                for (int i=0; i<max_order_y-n+1; i++){ // initialize
+                    move_temp_subject[i] = -1;
+                    move_temp_order[i] = -1;
+                }
+                for (int i=m+1; i<= max_order_y+m-n+1; i++){
+                    for (int j=0; j<subject_counts; j++){
+                        if (current_order[y][j] == i){
+                        move_temp_order[i-m-1] = i - (m-n+1);
+                        move_temp_subject[i-m-1] = j;
+                        }  
+                    }
+                }
+                for (int i=0; i<max_order_y-n+1; i++){
+                    current_order[y][move_temp_subject[i]] = move_temp_order[i];
                 }
             }
         }
-    }
+    } // if MOVE
+    
     else if (command == "QUERY"){
         if (!start)
             {throw runtime_error("no subjects yet");}
@@ -248,23 +289,21 @@ void TheRani::execute(const string& line) {
             int subject_number = 0; // use to find the number of subject
             int x, n;
             double double_x, double_n;
-
-            if (!(stream >> double_x >> double_n)){
-                if (stream.fail()){
-                    stream.clear();
-                    string dummy = "";
-                    stream >> dummy;
-                    if (dummy != ""){
-                        throw runtime_error("expected integer argument");
-                    }
+            stringstream check_argument_number(line);
+            string buf = "";
+            for (int i=0; i<3; i++){
+                if (!(check_argument_number >> buf)){
+                    throw runtime_error("too few arguments");
                 }
             }
+
+            if (!(stream >> double_x >> double_n)){
+                throw runtime_error("expected integer argument");
+            }
+
             if (((ceil(double_x) != floor(double_x)) || (ceil(double_n) != floor(double_n))) 
                 && (!stream.fail())){
                     throw runtime_error("expected integer argument");
-            }
-            if (stream.fail()){
-                throw runtime_error("too few arguments");
             }
             x = (int)double_x;
             n = (int)double_n;
