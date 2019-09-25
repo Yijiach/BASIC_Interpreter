@@ -7,9 +7,9 @@ using namespace std;
 
 class BooleanExpression{
 public:
-	BooleanExpression();
+	BooleanExpression(){};
 	virtual string format() = 0;
-	virtual ~BooleanExpression();
+	virtual ~BooleanExpression(){};
 };
 
 class LargerThan : public BooleanExpression{
@@ -41,5 +41,4 @@ private:
 	NumericExpression *left_;
 	NumericExpression *right_;
 };
-
 #endif

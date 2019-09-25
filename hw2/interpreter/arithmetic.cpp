@@ -1,11 +1,7 @@
 #include "arithmetic.h"
 using namespace std;
 
-NumericExpression :: NumericExpression(){}
-//NumericExpression :: ~NumericExpression(){}
-
 Constant :: Constant(int val) : val_(val){}
-int Constant :: get_val(){return val_;}
 string Constant :: format(){
 	return to_string(val_);
 }

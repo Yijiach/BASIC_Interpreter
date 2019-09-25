@@ -1,9 +1,6 @@
 #include "boolean.h"
 using namespace std;
 
-BooleanExpression :: BooleanExpression(){}
-BooleanExpression :: ~BooleanExpression(){}
-
 LargerThan :: LargerThan(NumericExpression *left, NumericExpression *right) : 
 left_(left), right_(right){}
 LargerThan :: ~LargerThan(){

@@ -9,17 +9,15 @@ using namespace std;
 
 class NumericExpression {
 public:
-    NumericExpression();
+    NumericExpression(){};
     virtual ~NumericExpression(){}
     virtual string format() = 0;
-    virtual int get_val(){return 0;}
 };
 
 class Constant : public NumericExpression{
 public:
 	Constant(int val);
 	string format();
-	int get_val();
 private:
 	int val_;
 };

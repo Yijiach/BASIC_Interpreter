@@ -30,10 +30,10 @@ Variable* Interpreter :: parse_variable(string n){
         string name = n.substr(0, start);
         NumericExpression* index = 
         parse_numeric_expression(n.substr(start+1, end-start-1));
-        return new ArrayVariable(name, index, 0);
+        return new ArrayVariable(name, index, 0); // value is not given, so make it 0
     }
     else{
-        return new IntegerVariable(n, 0);
+        return new IntegerVariable(n, 0); // value is not given, so make it 0
     }
 }
 
