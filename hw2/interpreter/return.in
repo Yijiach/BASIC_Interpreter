@@ -1,1 +1,1 @@
-1 IF (X+ A) > Y[1 ] THEN  3
+1 PRINT (((X +Y)+Z) +(A+B))
