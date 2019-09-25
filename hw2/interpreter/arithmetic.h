@@ -61,7 +61,7 @@ private:
     NumericExpression* right_;
 };
 
-class SubtractionExpression : NumericExpression{
+class SubtractionExpression : public NumericExpression{
 public:
     SubtractionExpression(NumericExpression* left, NumericExpression* right);
     ~SubtractionExpression();
@@ -73,7 +73,7 @@ private:
     NumericExpression* right_;
 };
 
-class MultiplicationExpression : NumericExpression{
+class MultiplicationExpression : public NumericExpression{
 public:
     MultiplicationExpression(NumericExpression* left, NumericExpression* right);
     ~MultiplicationExpression();
@@ -85,7 +85,7 @@ private:
     NumericExpression* right_;
 };
 
-class DivisionExpression : NumericExpression{
+class DivisionExpression : public NumericExpression{
 public:
     DivisionExpression(NumericExpression* left, NumericExpression* right);
     ~DivisionExpression();

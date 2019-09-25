@@ -19,10 +19,12 @@ public:
     Constant* parse_constant(string n);
     Variable* parse_variable(string n);
     NumericExpression* parse_numeric_expression(string n);
+    BooleanExpression* parse_boolean_expression(string n);
 
 private:
     void parse(istream& in);
     vector<string> entire_program;
+    vector<int> line_numbers;
 };
 
 #endif
