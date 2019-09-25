@@ -3,44 +3,43 @@
 
 #include <string>
 #include <iostream>
-using namespace std;
 
 class NumericExpression {
 public:
     NumericExpression(){}
     virtual ~NumericExpression(){}
-    virtual string format() = 0;
+    virtual std::string format() = 0;
 };
 
 class Constant : public NumericExpression{
 public:
 	Constant(int val);
-	string format();
+	std::string format();
 private:
 	int val_;
 };
 
 class Variable : public NumericExpression{
 public:
-	Variable(string name, int val);
-	virtual string format() = 0;
+	Variable(std::string name, int val);
+	virtual std::string format() = 0;
     virtual ~Variable(){}
 protected: // private?
-	string name_;
+	std::string name_;
 	int val_; // store value of the variable
 };
 
 class IntegerVariable : public Variable{
 public:
-	IntegerVariable(string name, int val);
-	string format();
+	IntegerVariable(std::string name, int val);
+	std::string format();
 };
 
 class ArrayVariable : public Variable{
 public:
-	ArrayVariable(string name, NumericExpression *index, int val); // (int val?)
+	ArrayVariable(std::string name, NumericExpression *index, int val); // (int val?)
 	virtual ~ArrayVariable();
-    string format();
+    std::string format();
 private:
 	NumericExpression *index_;
 };
@@ -50,7 +49,7 @@ public:
     AdditionExpression(NumericExpression* left, NumericExpression* right);
     ~AdditionExpression();
 
-    string format();
+    std::string format();
 
 private:
     NumericExpression* left_;
@@ -62,7 +61,7 @@ public:
     SubtractionExpression(NumericExpression* left, NumericExpression* right);
     ~SubtractionExpression();
 
-    string format();
+    std::string format();
 
 private:
     NumericExpression* left_;
@@ -74,7 +73,7 @@ public:
     MultiplicationExpression(NumericExpression* left, NumericExpression* right);
     ~MultiplicationExpression();
 
-    string format();
+    std::string format();
 
 private:
     NumericExpression* left_;
@@ -86,7 +85,7 @@ public:
     DivisionExpression(NumericExpression* left, NumericExpression* right);
     ~DivisionExpression();
 
-    string format();
+    std::string format();
 
 private:
     NumericExpression* left_;

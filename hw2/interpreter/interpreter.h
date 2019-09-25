@@ -8,22 +8,21 @@
 #include <string>
 #include <vector>
 #include <sstream>
-using namespace std;
 
 class Interpreter {
 public:
-    Interpreter(istream& in);
+    Interpreter(std::istream& in);
     ~Interpreter();
 
-    void write(ostream& out);
-    Constant* parse_constant(string n);
-    Variable* parse_variable(string n);
-    NumericExpression* parse_numeric_expression(string n);
-    BooleanExpression* parse_boolean_expression(string n);
+    void write(std::ostream& out);
+    Constant* parse_constant(std::string n);
+    Variable* parse_variable(std::string n);
+    NumericExpression* parse_numeric_expression(std::string n);
+    BooleanExpression* parse_boolean_expression(std::string n);
 
 private:
-    void parse(istream& in);
-    vector<Command*> entire_program;
+    void parse(std::istream& in);
+    std::vector<Command*> entire_program;
 };
 
 #endif
