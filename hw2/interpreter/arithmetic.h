@@ -7,7 +7,7 @@ using namespace std;
 
 class NumericExpression {
 public:
-    NumericExpression(){};
+    NumericExpression(){}
     virtual ~NumericExpression(){}
     virtual string format() = 0;
 };

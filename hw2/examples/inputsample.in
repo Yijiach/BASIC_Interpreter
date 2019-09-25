@@ -1,5 +1,5 @@
 1 PRINT (((X +Y)+Z) +(A+B))
-2 IF (X+ A) > Y[1 ] THEN  3
+2 IF (XX+ A) > Y[1 ] THEN  3
 3 LET Y[5  ]     20
 4 RETURN
 5 END

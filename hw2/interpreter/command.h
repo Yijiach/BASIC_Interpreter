@@ -7,11 +7,12 @@ using namespace std;
 
 class Command {
 public:
-	//virtual ~Command() = 0;
 	Command(int line);
     virtual string format() = 0;
-    virtual NumericExpression* get_val(){return NULL;}
-protected: // private?
+    // obtain the numeric expression (not necessary)
+    virtual NumericExpression* get_nexp(){return NULL;}
+    virtual ~Command(){}
+protected:
 	int line_; // line number
 };
 
@@ -28,7 +29,6 @@ class Let : public Command{
 public:
 	Let(int line, Variable* var, NumericExpression* nexp);
 	virtual ~Let();
-	NumericExpression* get_var(); // necessary?
 	string format();
 private:
 	NumericExpression* var_;

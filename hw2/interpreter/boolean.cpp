@@ -1,6 +1,6 @@
 #include "boolean.h"
 using namespace std;
-
+// larger
 LargerThan :: LargerThan(NumericExpression *left, NumericExpression *right) : 
 BooleanExpression(){
 	left_ = left;
@@ -13,7 +13,7 @@ LargerThan :: ~LargerThan(){
 string LargerThan :: format(){
 	return this->left_->format() + " > " + this->right_->format();
 }
-
+// less
 LessThan :: LessThan(NumericExpression *left, NumericExpression *right) : 
 BooleanExpression(){
 	left_ = left;
@@ -26,7 +26,7 @@ LessThan :: ~LessThan(){
 string LessThan :: format(){
 	return this->left_->format() + " < " + this->right_->format();
 }
-
+ // equal
 EqualTo :: EqualTo(NumericExpression *left, NumericExpression *right) : 
 BooleanExpression(){
 	left_ = left;

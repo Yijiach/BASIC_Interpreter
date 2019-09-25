@@ -7,9 +7,9 @@ Interpreter::Interpreter(istream& in) {
 
 Interpreter::~Interpreter() {
 	for (int i=0; i<entire_program.size(); i++){
-		entire_program.pop_back();
-        line_numbers.pop_back();
+        delete entire_program[i];
 	}
+    entire_program.clear();
 }
 
 Constant* Interpreter :: parse_constant(string n){
@@ -89,7 +89,7 @@ NumericExpression* Interpreter :: parse_numeric_expression(string n){
             if (is_divide){return new DivisionExpression(left, right);}
         }
         else{
-            //n = n.substr(1,n.size()-2); // get rid of the outmost parentheses
+            //n = n.substr(1,n.size()-2);
             int left_count = 0;
             int right_count = 0;
             bool is_add = false;
@@ -170,8 +170,6 @@ void Interpreter::parse(istream& in) {
         stringstream stream(line);
         stream >> line_number;
 
-        line_numbers.push_back(line_number);
-
         // Your code here
         string command_name;
         stream >> command_name;
@@ -181,8 +179,7 @@ void Interpreter::parse(istream& in) {
             while (stream >> temp_string){numeric_expression += temp_string;}
             NumericExpression* nexp = parse_numeric_expression(numeric_expression);
             Print* newCommand = new Print(line_number, nexp);
-            entire_program.push_back(newCommand->format());
-            delete newCommand;
+            entire_program.push_back(newCommand);
         }
         else if (command_name == "LET"){
             string variable = ""; // the integer variable or array variable
@@ -236,15 +233,13 @@ void Interpreter::parse(istream& in) {
             Variable* var = parse_variable(variable);
             NumericExpression* nexp = parse_numeric_expression(numeric_expression);
             Let* newCommand = new Let(line_number, var, nexp);
-            entire_program.push_back(newCommand->format());
-            delete newCommand;
+            entire_program.push_back(newCommand);
         }
         else if (command_name == "GOTO"){
             int jline;
             stream >> jline;
             GoTo* newCommand = new GoTo(line_number, jline);
-            entire_program.push_back(newCommand->format());
-            delete newCommand;
+            entire_program.push_back(newCommand);
         }
         else if (command_name == "IF"){
             string boolean_expression = "";
@@ -257,31 +252,27 @@ void Interpreter::parse(istream& in) {
             stream >> jline;
             BooleanExpression* bexp = parse_boolean_expression(boolean_expression);
             IfThen* newCommand= new IfThen(line_number, bexp, jline);
-            entire_program.push_back(newCommand->format());
-            delete newCommand;
+            entire_program.push_back(newCommand);
         }
         else if (command_name == "GOSUB"){
             int jline;
             stream >> jline;
             GoSub* newCommand = new GoSub(line_number, jline);
-            entire_program.push_back(newCommand->format());
-            delete newCommand;
+            entire_program.push_back(newCommand);
         }
         else if (command_name == "RETURN"){
             Return* newCommand = new Return(line_number);
-            entire_program.push_back(newCommand->format());
-            delete newCommand;
+            entire_program.push_back(newCommand);
         }
         else if (command_name == "END"){
             End* newCommand = new End(line_number);
-            entire_program.push_back(newCommand->format());
-            delete newCommand;
+            entire_program.push_back(newCommand);
         }
     }
 }
 
 void Interpreter::write(ostream& out) {
     for (unsigned int i=0; i<entire_program.size(); i++){
-        out << line_numbers[i] << " " << entire_program[i] << endl;
+        out << entire_program[i]->format() << endl;
     }
 }

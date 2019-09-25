@@ -23,8 +23,7 @@ public:
 
 private:
     void parse(istream& in);
-    vector<string> entire_program;
-    vector<int> line_numbers;
+    vector<Command*> entire_program;
 };
 
 #endif

@@ -7,38 +7,38 @@ using namespace std;
 
 class BooleanExpression{
 public:
-	BooleanExpression(){};
-	virtual string format() = 0;
-	virtual ~BooleanExpression(){};
+ 	BooleanExpression(){}
+ 	virtual string format() = 0;
+ 	virtual ~BooleanExpression(){}
 };
 
 class LargerThan : public BooleanExpression{
 public:
-	LargerThan(NumericExpression *left, NumericExpression *right);
-	virtual ~LargerThan();
-	string format();
+ 	LargerThan(NumericExpression *left, NumericExpression *right);
+ 	virtual ~LargerThan();
+ 	string format();
 private:
-	NumericExpression *left_;
-	NumericExpression *right_;
+ 	NumericExpression *left_;
+ 	NumericExpression *right_;
 };
 
 class LessThan : public BooleanExpression{
 public:
 	LessThan(NumericExpression *left, NumericExpression *right);
-	virtual ~LessThan();
+ 	virtual ~LessThan();
 	string format();
 private:
-	NumericExpression *left_;
-	NumericExpression *right_;
+ 	NumericExpression *left_;
+ 	NumericExpression *right_;
 };
 
 class EqualTo : public BooleanExpression{
 public:
-	EqualTo(NumericExpression *left, NumericExpression *right);
-	virtual ~EqualTo();
-	string format();
+ 	EqualTo(NumericExpression *left, NumericExpression *right);
+ 	virtual ~EqualTo();
+ 	string format();
 private:
-	NumericExpression *left_;
-	NumericExpression *right_;
+ 	NumericExpression *left_;
+ 	NumericExpression *right_;
 };
 #endif
