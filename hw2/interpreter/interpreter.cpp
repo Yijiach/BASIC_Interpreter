@@ -159,7 +159,7 @@ BooleanExpression* Interpreter :: parse_boolean_expression(string n){
     NumericExpression* right = 
     parse_numeric_expression(n.substr(operator_index+1,n.size()-1-operator_index));
     if (is_equal){return new EqualTo(left, right);}
-    if (is_larger){return new LargerThan(left, right);}
+    if (is_larger){return new LessThan(right, left);} // change X>Y to Y<X
     if (is_less){return new LessThan(left, right);}
 }
 

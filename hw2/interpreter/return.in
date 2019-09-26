@@ -1,8 +1,1 @@
-1 PRINT (((X +Y)+Z) +(A+B))
-2 IF (XX+ A) > Y[1 ] THEN  3
-3 LET Y[5  ]     20
-4 RETURN
-5 END
-6 GOTO 3
-7 GOSUB 5
-8 LET Y 20
+1 IF X > Y THEN 1
