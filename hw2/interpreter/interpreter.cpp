@@ -153,14 +153,14 @@ BooleanExpression* Interpreter :: parse_boolean_expression(string n){
             is_less = true;
             operator_index = i;
         }
-        NumericExpression* left = 
-        parse_numeric_expression(n.substr(0,operator_index));
-        NumericExpression* right = 
-        parse_numeric_expression(n.substr(operator_index+1,n.size()-1-operator_index));
-        if (is_equal){return new EqualTo(left, right);}
-        if (is_larger){return new LargerThan(left, right);}
-        if (is_less){return new LessThan(left, right);}
     }
+    NumericExpression* left = 
+    parse_numeric_expression(n.substr(0,operator_index));
+    NumericExpression* right = 
+    parse_numeric_expression(n.substr(operator_index+1,n.size()-1-operator_index));
+    if (is_equal){return new EqualTo(left, right);}
+    if (is_larger){return new LargerThan(left, right);}
+    if (is_less){return new LessThan(left, right);}
 }
 
 void Interpreter::parse(istream& in) {
