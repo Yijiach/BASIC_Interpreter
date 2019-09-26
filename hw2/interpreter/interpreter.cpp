@@ -6,7 +6,7 @@ Interpreter::Interpreter(istream& in) {
 }
 
 Interpreter::~Interpreter() {
-	for (int i=0; i<entire_program.size(); i++){
+	for (unsigned int i=0; i<entire_program.size(); i++){
         delete entire_program[i];
 	}
     entire_program.clear();
@@ -23,7 +23,7 @@ Variable* Interpreter :: parse_variable(string n){
     if (n[n.size()-1] == ']'){
         int start = 0;
         int end = 0;
-        for (int i=0; i<n.size(); i++){
+        for (unsigned int i=0; i<n.size(); i++){
             if (n[i] == '['){start = i;}
             if (n[i] == ']'){end = i;}
         }
@@ -35,6 +35,7 @@ Variable* Interpreter :: parse_variable(string n){
     else{
         return new IntegerVariable(n, 0); // value is not given, so make it 0
     }
+    return 0; // control reaches end of non-void function
 }
 
 NumericExpression* Interpreter :: parse_numeric_expression(string n){
@@ -48,7 +49,7 @@ NumericExpression* Interpreter :: parse_numeric_expression(string n){
     }
     else{
         bool most_inside = true;
-        for (int i=1; i<n.size(); i++){
+        for (unsigned int i=1; i<n.size(); i++){
             if (n[i] == '('){
                 most_inside = false;
             }
@@ -60,7 +61,7 @@ NumericExpression* Interpreter :: parse_numeric_expression(string n){
             bool is_divide = false;
             // find the position of the operator
             int operator_index = 0; 
-            for (int i=1; i<n.size()-1; i++){
+            for (unsigned int i=1; i<n.size()-1; i++){
                 if (n[i] == '+'){
                     is_add = true;
                     operator_index = i;
@@ -97,7 +98,7 @@ NumericExpression* Interpreter :: parse_numeric_expression(string n){
             bool is_subtract = false;
             bool is_divide = false;
             int operator_index = 0;
-            for (int i=1; i<n.size()-1; i++){
+            for (unsigned int i=1; i<n.size()-1; i++){
                 // count the number of ()
                 if (n[i] == '('){left_count++;}
                 if (n[i] == ')'){right_count++;}
@@ -133,6 +134,7 @@ NumericExpression* Interpreter :: parse_numeric_expression(string n){
             if (is_divide){return new DivisionExpression(left, right);}
         }
     }
+    return 0; // control reaches end of non-void function
 }
 
 BooleanExpression* Interpreter :: parse_boolean_expression(string n){
@@ -140,7 +142,7 @@ BooleanExpression* Interpreter :: parse_boolean_expression(string n){
     bool is_larger = false;
     bool is_less = false;
     int operator_index = 0;
-    for (int i=0; i<n.size(); i++){
+    for (unsigned int i=0; i<n.size(); i++){
         if (n[i] == '='){
             is_equal = true;
             operator_index = i;
@@ -161,6 +163,7 @@ BooleanExpression* Interpreter :: parse_boolean_expression(string n){
     if (is_equal){return new EqualTo(left, right);}
     if (is_larger){return new LessThan(right, left);} // change X>Y to Y<X
     if (is_less){return new LessThan(left, right);}
+    return 0; // control reaches end of non-void function
 }
 
 void Interpreter::parse(istream& in) {
@@ -195,7 +198,7 @@ void Interpreter::parse(istream& in) {
                 numeric_expression = remaining;
             }
             else if (remaining[0] == '['){ // Y  [5]
-                for (int i=0; i<remaining.size(); i++){
+                for (unsigned int i=0; i<remaining.size(); i++){
                     if (remaining[i] == ']'){
                         end_variable_index = i;
                         break;
@@ -207,14 +210,14 @@ void Interpreter::parse(istream& in) {
             }
             else{ // Y[5   ] or Y
                 bool break_in_half = false;
-                for (int i=0; i<variable_name.size(); i++){
+                for (unsigned int i=0; i<variable_name.size(); i++){
                     if (variable_name[i] == '['){
                         break_in_half = true;
                         break;
                     }
                 }
                 if (break_in_half){ // Y[5   ]
-                    for (int i=0; i<remaining.size(); i++){
+                    for (unsigned int i=0; i<remaining.size(); i++){
                         if (remaining[i] == ']'){
                             end_variable_index = i;
                             break;
