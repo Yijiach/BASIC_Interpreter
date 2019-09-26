@@ -1,6 +1,10 @@
 #include "command.h"
 using namespace std;
 Command :: Command(int line) : line_(line){}
+
+NumericExpression* Command :: get_nexp(){
+	return NULL; // virtual function
+}
 //print
 Print :: Print(int line, NumericExpression* nexp) : Command(line){
 	line_ = line;

@@ -8,8 +8,8 @@ class Command {
 public:
 	Command(int line);
     virtual std::string format() = 0;
-    // obtain the numeric expression (not necessary)
-    virtual NumericExpression* get_nexp(){return NULL;}
+    // obtain the numeric expression
+    virtual NumericExpression* get_nexp();
     virtual ~Command(){}
 protected:
 	int line_; // line number
