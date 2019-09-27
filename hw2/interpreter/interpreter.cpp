@@ -1,25 +1,25 @@
 #include "interpreter.h"
 using namespace std;
 
-Interpreter::Interpreter(istream& in) {
+Interpreter::Interpreter(istream& in) { // constructor
     this->parse(in);
 }
 
-Interpreter::~Interpreter() {
+Interpreter::~Interpreter() { // destructor
 	for (unsigned int i=0; i<entire_program.size(); i++){
         delete entire_program[i];
 	}
     entire_program.clear();
 }
 
-Constant* Interpreter :: parse_constant(string n){
+Constant* Interpreter :: parse_constant(string n){ // parse constant
     stringstream s(n);
     int val = 0;
     s >> val;
     return new Constant(val);
 }
 
-Variable* Interpreter :: parse_variable(string n){
+Variable* Interpreter :: parse_variable(string n){ // parse variable
     if (n[n.size()-1] == ']'){
         int start = 0;
         int end = 0;
@@ -37,7 +37,7 @@ Variable* Interpreter :: parse_variable(string n){
     }
     return 0;
 }
-
+// parse numeric expression, use recursion. Base case: (X+Y)
 NumericExpression* Interpreter :: parse_numeric_expression(string n){
     if ((n[0] == '-') || (n[0] == '0') || (n[0] == '1') || (n[0] == '1')
         || (n[0] == '2') || (n[0] == '3') || (n[0] == '4') || (n[0] == '5')
@@ -135,7 +135,7 @@ NumericExpression* Interpreter :: parse_numeric_expression(string n){
     }
     return 0;
 }
-
+// parse boolean expression
 BooleanExpression* Interpreter :: parse_boolean_expression(string n){
     bool is_equal = false;
     bool is_larger = false;

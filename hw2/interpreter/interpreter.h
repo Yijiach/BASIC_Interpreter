@@ -15,6 +15,7 @@ public:
     ~Interpreter();
 
     void write(std::ostream& out);
+    // all specific parse functions
     Constant* parse_constant(std::string n);
     Variable* parse_variable(std::string n);
     NumericExpression* parse_numeric_expression(std::string n);
