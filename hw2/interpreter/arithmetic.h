@@ -24,7 +24,7 @@ public:
 	Variable(std::string name, int val);
 	virtual std::string format() = 0;
     virtual ~Variable(){}
-protected: // private?
+protected:
 	std::string name_;
 	int val_; // store value of the variable
 };
@@ -37,7 +37,7 @@ public:
 
 class ArrayVariable : public Variable{
 public:
-	ArrayVariable(std::string name, NumericExpression *index, int val); // (int val?)
+	ArrayVariable(std::string name, NumericExpression *index, int val);
 	virtual ~ArrayVariable();
     std::string format();
 private:

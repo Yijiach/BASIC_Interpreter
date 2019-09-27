@@ -35,7 +35,7 @@ GoTo :: GoTo(int line, int jline) : Command(line){
 	jline_ = jline;
 }
 string GoTo :: format(){
-	return to_string(line_) + " GOTO " + to_string(jline_);
+	return to_string(line_) + " GOTO <" + to_string(jline_) + ">";
 }
 //ifthen
 IfThen :: IfThen(int line, BooleanExpression* bexp, int jline) : Command(line){
@@ -54,7 +54,7 @@ GoSub :: GoSub(int line, int jline) : Command(line){
 	jline_ = jline;
 }
 string GoSub :: format(){
-	return to_string(line_) + " GOSUB " + to_string(jline_);
+	return to_string(line_) + " GOSUB <" + to_string(jline_) + ">";
 }
 //return
 Return :: Return(int line) : Command(line){

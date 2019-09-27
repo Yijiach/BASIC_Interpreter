@@ -10,8 +10,6 @@ Variable :: Variable(string name, int val) : NumericExpression(){
     name_ = name;
     val_ = val;
 }
-
-//Variable :: ~Variable(){}
 // integervariable
 IntegerVariable :: IntegerVariable(string name,int val) : Variable(name, val){
     name_ = name;

@@ -35,7 +35,7 @@ Variable* Interpreter :: parse_variable(string n){
     else{
         return new IntegerVariable(n, 0); // value is not given, so make it 0
     }
-    return 0; // control reaches end of non-void function
+    return 0;
 }
 
 NumericExpression* Interpreter :: parse_numeric_expression(string n){
@@ -90,7 +90,6 @@ NumericExpression* Interpreter :: parse_numeric_expression(string n){
             if (is_divide){return new DivisionExpression(left, right);}
         }
         else{
-            //n = n.substr(1,n.size()-2);
             int left_count = 0;
             int right_count = 0;
             bool is_add = false;
@@ -134,7 +133,7 @@ NumericExpression* Interpreter :: parse_numeric_expression(string n){
             if (is_divide){return new DivisionExpression(left, right);}
         }
     }
-    return 0; // control reaches end of non-void function
+    return 0;
 }
 
 BooleanExpression* Interpreter :: parse_boolean_expression(string n){
@@ -163,7 +162,7 @@ BooleanExpression* Interpreter :: parse_boolean_expression(string n){
     if (is_equal){return new EqualTo(left, right);}
     if (is_larger){return new LessThan(right, left);} // change X>Y to Y<X
     if (is_less){return new LessThan(left, right);}
-    return 0; // control reaches end of non-void function
+    return 0;
 }
 
 void Interpreter::parse(istream& in) {
