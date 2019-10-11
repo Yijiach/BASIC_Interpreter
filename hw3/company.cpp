@@ -1,4 +1,5 @@
 #include "company.hpp"
+using namespace std;
 
 CompanyTracker::CompanyTracker (int n)
   // initializes the tracker with n students and their 1-person companies
