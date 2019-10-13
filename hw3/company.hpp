@@ -51,4 +51,5 @@ class CompanyTracker {
   /* Feel free to add private helper functions as you see fit.
      In particular, you may want a function to find the largest company
      that a student i is part of. */
+  Company* largest_company(int i); // returns the largest company that holds i
 };
