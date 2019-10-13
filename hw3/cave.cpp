@@ -5,6 +5,7 @@ using namespace std;
 
 // check if it is able to roll up
 bool roll_up(stack<char> s, char dir){
+	//don't need to check if there is no element in the stack
 	if (s.empty()) return false;
 	if ((s.top() == 'N') && (dir == 'S')) return true;
 	else if ((s.top() == 'S') && (dir == 'N')) return true;
