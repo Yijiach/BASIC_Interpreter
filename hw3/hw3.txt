@@ -4,9 +4,9 @@ Problem 1 (Abstract Data Types, 10%)
 2. 
 	A set of student objects who earned A in CSCI 103. Student object contains information of that student. Also, elements won't appear multiple times in a set. It's also easy to check whether a student is in the set or not.
 3. 
-	A map that maps from a student's name to the student object. Because each student has a unique name. It will be easy to use map to find that student.
+	A map that maps from a student's name to the student object. (Keys: strings of student names. Values: student objects.) Because each student has a unique name. It will be easy to use map to find that student.
 4. 
-	A map that maps from a grade to a list of student objects. Because mutiple students might have the same grade, therefore, store them in a list, which is easy to add and remove students. Also, the map makes it to find that list given the grade.
+	A map that maps from a grade to a list of student objects. (Keys: gradea. Values: list of students.) Because mutiple students might have the same grade, therefore, store them in a list, which is easy to add and remove students. Also, the map makes it easy to find that list given the grade.
 
 Problem 2 (Linked Lists, Recursion, 10%)
 	Linked list returned by funcA: 5 4 3 2 1

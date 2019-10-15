@@ -25,8 +25,3 @@ void helper(string n, int index){
 		}
 	}
 }
-
-// int main(int argc, char* argv[]){
-// 	permutations(argv[1]);
-// 	return 0;
-// }
