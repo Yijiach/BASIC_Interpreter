@@ -16,8 +16,8 @@ CompanyTracker::~CompanyTracker ()
 {
   // your implementation goes here
   for (int i=0; i<numCompanies; ++i){
-    while (largest_company(i) != companies[i]){
-      split(i);
+    while (largest_company(i) != companies[i]){ // keep deleting until no parent
+      split(i); // split function deletes the parent company
     }
   }
   for (int i=0; i<numCompanies; ++i){
@@ -71,14 +71,65 @@ bool CompanyTracker::inSameCompany (int i, int j)
      Returns false if i or j (or both) is out of range. */
 {
   // your implementation goes here
+  // out of range
   if ((i>=numCompanies) || (j>=numCompanies) || (i<0)  || (j<0)) return false;
-  if (i == j) return true;
+  if (i == j) return true; // i == j
   if (largest_company(i) == largest_company(j)) return true;
   return false;
 }
 
 Company* CompanyTracker :: largest_company(int i){
   Company* temp = companies[i]; // first set temp as the smallest company i is in
-  while (temp->parent != nullptr) temp = temp-> parent;
+  while (temp->parent != nullptr) temp = temp-> parent; // find the largest company
   return temp;
 }
+
+////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+int main(int argc, char* argv[]){
+  CompanyTracker ctr(5);
+  ctr.merge(0,1);
+  ctr.merge(2,3);
+  ctr.merge(0,3);
+  ctr.split(2);
+  ctr.split(2);
+  ctr.merge(2,4);
+  ctr.split(0);
+  cout << ctr.inSameCompany(4,2) << endl;
+  return 0;
+}
+
+// CompanyTracker my(5);
+  // my.merge(0,1);
+  // my.merge(2,3);
+  // my.merge(0,3);
+  // cout << my.inSameCompany(0,3) << endl;//1
+  //  cout << my.inSameCompany(4,0) << endl;//0
+
+  //  my.split(2);
+  //  cout << my.inSameCompany(0,1) << endl;//1
+  //  cout << my.inSameCompany(2,1) << endl;//0
+
+  //  my.split(2);
+  //  cout << my.inSameCompany(2,3) << endl;//0
+  //  cout << my.inSameCompany(1,2) << endl;//0
+
+  //  my.merge(2,4);
+  //  cout << my.inSameCompany(2,3) << endl;//0
+  //  cout << my.inSameCompany(2,4) << endl;//1
+
+  //  my.split(0);
+  //  cout << my.inSameCompany(0,1) << endl;//0
+  //  cout << my.inSameCompany(2,4) << endl;//1
+
+  //  my.split(3);
+  //  cout << my.inSameCompany(2,4) << endl;//1
+  //  cout << my.inSameCompany(1,-6) << endl;//0
+
+  //  my.merge(2,4);
+  //  cout << my.inSameCompany(4,2) << endl;//1
+  //  cout << my.inSameCompany(2,3) << endl;//0
+
+  //  my.merge(3,3);
+  //  cout << my.inSameCompany(3,1) << endl;//0
+  //  cout << my.inSameCompany(3,3) << endl;//1
