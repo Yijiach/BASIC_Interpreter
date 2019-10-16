@@ -13,11 +13,11 @@ Problem 2 (Linked Lists, Recursion, 10%)
 	Explanation: funcB is recursive. The innermost iteration returns the pointer points to 5, and pass that to the previous level. So 5->next = 4. And so on. After funcB ends, the data structure will be like 5->4->3->2->1. Node *out = in will let "out" and "in" point to the same list. The while loop in funcA will change pointer "out" to be pointing to 5. Setting funcB(in)->next = NULL will set the next of the last item in the linked list (i.e. 1->next) to be pointing to NULL. Therefore, the linked list returned by funcA will be: 5->4->3->2->1->NULL.
 
 Problem 3 (Runtime Analysis, 20%)
-(a) Θ(n^2)
-	explanation: For the whole program, consider the worst case: A[i] always equal to 0. innermost loop is Θ(j+1). But it will be executed only once because A[i] will be set to 1. Second loop is just Θ(i). Outermost loop is Θ(n^2).
-(b) Θ(n)
-	func(x) will keep calling itself until the input is reduced to 1. So it is Θ(x). The for loop is Θ(summation of 2^i from i=0 to i=log(n)) which can be simplified as Θ(2^log(n)) which is Θ(n).
-(c) Θ((n^2)*(logn))
-	The first half of the code creates this linked list: 0->1->2-> ... -> n-1. Therefore, it is Θ(n). For the second half: The innermost loop is Θ(n). The if statement inside the while loop holds true for n/i times each iteration because data%i = 0 n/i times. So the while loop is: Θ(n^2/i). Outermost loop is Θ(summation of n^2/i from i=1 to i=n) which is Θ((n^2)*(logn)). Combine with the first half of the code, gives the runtime of Θ((n^2)*(logn)).
-(d) Θ(n)
-	Similar to inserting to a vector, there are log3(n) times when the space is not enough and require a deep copy, which has a runtime of Θ(i). And the for the remaining n-log3(n) times, runtime is Θ(1). So the overall runtime is Θ((summation of 3^i from i=1 to i=log3(n)) + (n-log3(n))), which simplifies as Θ(n).
+(a) theta(n^2)
+	explanation: For the whole program, consider the worst case: A[i] always equal to 0. innermost loop is theta(j+1). But it will be executed only once because A[i] will be set to 1. Second loop is just theta(i). Outermost loop is theta(n^2).
+(b) theta(n)
+	func(x) will keep calling itself until the input is reduced to 1. So it is theta(x). The for loop is theta(summation of 2^i from i=0 to i=log(n)) which can be simplified as theta(2^log(n)) which is theta(n).
+(c) theta((n^2)*(logn))
+	The first half of the code creates this linked list: 0->1->2-> ... -> n-1. Therefore, it is theta(n). For the second half: The innermost loop is theta(n). The if statement inside the while loop holds true for n/i times each iteration because data%i = 0 n/i times. So the while loop is: theta(n^2/i). Outermost loop is theta(summation of n^2/i from i=1 to i=n) which is theta((n^2)*(logn)). Combine with the first half of the code, gives the runtime of theta((n^2)*(logn)).
+(d) theta(n)
+	Similar to inserting to a vector, there are log3(n) times when the space is not enough and require a deep copy, which has a runtime of theta(i). And the for the remaining n-log3(n) times, runtime is theta(1). So the overall runtime is theta((summation of 3^i from i=1 to i=log3(n)) + (n-log3(n))), which simplifies as theta(n).
