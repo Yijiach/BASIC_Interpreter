@@ -4,7 +4,7 @@
 using namespace std;
 
 // check if it is able to roll up
-bool roll_up(stack<char> s, char dir){
+bool roll_up(stack<char>& s, char dir){ // pass by reference, faster runtime
 	//don't need to check if there is no element in the stack
 	if (s.empty()) return false;
 	if ((s.top() == 'N') && (dir == 'S')) return true;
@@ -15,6 +15,7 @@ bool roll_up(stack<char> s, char dir){
 }
 
 int main(int argc, char* argv[]){
+	if (argc < 2) return -1; // no input file specified, do nothing
 	ifstream myFile(argv[1]);
 	stack<char> s;
 	char dir; // stores current direction

@@ -2,6 +2,7 @@
 # include <string>
 using namespace std;
 
+// function prototypes
 void permutations(string in);
 void helper(string n, int index);
 
