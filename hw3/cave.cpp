@@ -15,7 +15,7 @@ bool roll_up(stack<char>& s, char dir){ // pass by reference, faster runtime
 }
 
 int main(int argc, char* argv[]){
-	if (argc < 2) return -1; // no input file specified, do nothing
+	if (argc < 2) return 1; // no input file specified, do nothing
 	ifstream myFile(argv[1]);
 	stack<char> s;
 	char dir; // stores current direction

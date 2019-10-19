@@ -24,9 +24,12 @@ Variable* Interpreter :: parse_variable(string n){ // parse variable
         int start = 0;
         int end = 0;
         for (unsigned int i=0; i<n.size(); i++){
-            if (n[i] == '['){start = i;}
-            if (n[i] == ']'){end = i;}
+            if (n[i] == '['){
+                start = i;
+                break;
+            }
         }
+        end = n.size()-1;
         string name = n.substr(0, start);
         NumericExpression* index = 
         parse_numeric_expression(n.substr(start+1, end-start-1));
@@ -65,19 +68,23 @@ NumericExpression* Interpreter :: parse_numeric_expression(string n){
                 if (n[i] == '+'){
                     is_add = true;
                     operator_index = i;
+                    break;
                 }
                 if (n[i] == '*'){
                     is_multiply = true;
                     operator_index = i;
+                    break;
                 }
-                if (n[i] == '-'){
+                if ((n[i] == '-') && (i != 1)){ // case -1 - -1
                     is_subtract = true;
                     operator_index = i;
+                    break;
                 }
                 if (
                     n[i] == '/'){
                     is_divide = true;
                     operator_index = i;
+                    break;
                 }
             }
             NumericExpression* left = 
@@ -97,27 +104,27 @@ NumericExpression* Interpreter :: parse_numeric_expression(string n){
             bool is_subtract = false;
             bool is_divide = false;
             int operator_index = 0;
-            for (unsigned int i=1; i<n.size()-1; i++){
+            for (unsigned int i=0; i<n.size()-1; i++){
                 // count the number of ()
                 if (n[i] == '('){left_count++;}
                 if (n[i] == ')'){right_count++;}
                 // find the outmost operator
-                if ((n[i] == '+') && (left_count == right_count)){
+                if ((n[i] == '+') && (left_count == right_count+1)){
                     operator_index = i;
                     is_add = true;
                     break;
                 }
-                else if ((n[i] == '*') && (left_count == right_count)){
+                else if ((n[i] == '*') && (left_count == right_count+1)){
                     operator_index = i;
                     is_multiply = true;
                     break;
                 }
-                else if ((n[i] == '-') && (left_count == right_count)){
+                else if ((n[i] == '-') && (left_count == right_count+1) && (i != 1)){
                     operator_index = i;
                     is_subtract = true;
                     break;
                 }
-                else if ((n[i] == '/') && (left_count == right_count)){
+                else if ((n[i] == '/') && (left_count == right_count+1)){
                     operator_index = i;
                     is_divide = true;
                     break;
@@ -197,8 +204,12 @@ void Interpreter::parse(istream& in) {
                 numeric_expression = remaining;
             }
             else if (remaining[0] == '['){ // Y  [5]
+                int left_count = 0;
+                int right_count = 0;
                 for (unsigned int i=0; i<remaining.size(); i++){
-                    if (remaining[i] == ']'){
+                    if (remaining[i] == '['){left_count++;}
+                    if (remaining[i] == ']'){right_count++;}
+                    if ((remaining[i] == ']') && (left_count == right_count)){
                         end_variable_index = i;
                         break;
                     }
@@ -216,8 +227,16 @@ void Interpreter::parse(istream& in) {
                     }
                 }
                 if (break_in_half){ // Y[5   ]
+                    int left_count = 0;
+                    int right_count = 0;
+                    for (unsigned int i=0; i<variable_name.size(); ++i){
+                        if (variable_name[i] == '['){left_count++;}
+                        if (variable_name[i] == ']'){right_count++;}
+                    }
                     for (unsigned int i=0; i<remaining.size(); i++){
-                        if (remaining[i] == ']'){
+                        if (remaining[i] == '['){left_count++;}
+                        if (remaining[i] == ']'){right_count++;}
+                        if ((remaining[i] == ']') && (left_count == right_count)){
                             end_variable_index = i;
                             break;
                         }
