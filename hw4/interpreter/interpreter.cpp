@@ -36,11 +36,16 @@ Variable* Interpreter :: parse_variable(string n){ // parse variable
         string name = n.substr(0, start);
         NumericExpression* index = 
         parse_numeric_expression(n.substr(start+1, end-start-1));
-        if (arr_variable_map.find(name) != arr_variable_map.end()){
-            return arr_variable_map[name];
+        string string_index = to_string(index->get_value());
+        // return the previous array variable if both name and index are equal
+        if (arr_variable_map.find(name+string_index) != arr_variable_map.end()){
+            if (index->get_value() == 
+                arr_variable_map[name+string_index]->get_index()->get_value()){
+                return arr_variable_map[name+string_index];
+            }
         }
         ArrayVariable* temp =  new ArrayVariable(name, index, 0);
-        arr_variable_map[name] = temp; // store it in map
+        arr_variable_map[name+string_index] = temp; // store it in map
         return temp;
     }
     else{
@@ -354,31 +359,6 @@ void Interpreter :: execute(){
         }
         else if (it->second->get_name() == "LET"){
             if (it->second->get_var()->is_arr()){ // array variable
-                int index = it->second->get_var()->get_index()->get_value();
-                string name = it->second->get_var()->get_name();
-                // variable not declared before
-                if (inf_arr.find(name) == inf_arr.end()){
-                    vector<int> temp;
-                    for (int i=0; i<index; i++){
-                        temp.push_back(0);
-                    }
-                    temp.push_back(it->second->get_nexp()->get_value());
-                    inf_arr[name] = temp;
-                }
-                // declared before
-                else{
-                    // index >= size
-                    if (index >= (int)inf_arr[name].size()){
-                        for (int i=(int)inf_arr[name].size(); i<index; i++){
-                            inf_arr[name].push_back(0);
-                        }
-                        inf_arr[name].push_back(it->second->get_nexp()->get_value());
-                    }
-                    // index < size
-                    else{
-                        inf_arr[name][index] = it->second->get_nexp()->get_value();
-                    }
-                }
                 it->second->get_var()->set_value(it->second->get_nexp()); //set value
             }
             else{ // integer variable
