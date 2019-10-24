@@ -6,10 +6,13 @@ Interpreter::Interpreter(istream& in) { // constructor
 }
 
 Interpreter::~Interpreter() { // destructor
-	for (unsigned int i=0; i<entire_program.size(); i++){
-        delete entire_program[i];
-	}
-    entire_program.clear();
+	// for (unsigned int i=0; i<entire_program.size(); i++){
+ //        if (entire_program[i] != NULL){
+ //            delete entire_program[i];
+ //            entire_program[i] = NULL;
+ //        }
+	// }
+ //    entire_program.clear();
 }
 
 Constant* Interpreter :: parse_constant(string n){ // parse constant
@@ -33,10 +36,20 @@ Variable* Interpreter :: parse_variable(string n){ // parse variable
         string name = n.substr(0, start);
         NumericExpression* index = 
         parse_numeric_expression(n.substr(start+1, end-start-1));
-        return new ArrayVariable(name, index, 0); // value is not given, so make it 0
+        if (arr_variable_map.find(name) != arr_variable_map.end()){
+            return arr_variable_map[name];
+        }
+        ArrayVariable* temp =  new ArrayVariable(name, index, 0);
+        arr_variable_map[name] = temp; // store it in map
+        return temp;
     }
     else{
-        return new IntegerVariable(n, 0); // value is not given, so make it 0
+        if (int_variable_map.find(n) != int_variable_map.end()){
+            return int_variable_map[n];
+        }
+        IntegerVariable* temp = new IntegerVariable(n, 0);
+        int_variable_map[n] = temp;
+        return temp;
     }
     return 0;
 }
@@ -87,10 +100,30 @@ NumericExpression* Interpreter :: parse_numeric_expression(string n){
                     break;
                 }
             }
-            NumericExpression* left = 
-            parse_numeric_expression(n.substr(1,operator_index-1));
-            NumericExpression* right = 
-            parse_numeric_expression(n.substr(operator_index+1,n.size()-2-operator_index));
+            string l = n.substr(1,operator_index-1);
+            string r = n.substr(operator_index+1,n.size()-2-operator_index);
+            NumericExpression* left = NULL;
+            NumericExpression* right = NULL;
+            if ((l[0] == '-') || (l[0] == '0') || (l[0] == '1') || (l[0] == '1')
+                || (l[0] == '2') || (l[0] == '3') || (l[0] == '4') || (l[0] == '5')
+                || (l[0] == '6') || (l[0] == '7') || (l[0] == '8') || (l[0] == '9')){
+                left = parse_constant(l);
+            }
+            else{
+                left = parse_variable(l);
+            }
+            if ((r[0] == '-') || (r[0] == '0') || (r[0] == '1') || (r[0] == '1')
+                || (r[0] == '2') || (r[0] == '3') || (r[0] == '4') || (r[0] == '5')
+                || (r[0] == '6') || (r[0] == '7') || (r[0] == '8') || (r[0] == '9')){
+                right = parse_constant(r);
+            }
+            else{
+                right = parse_variable(r);
+            }
+            // NumericExpression* left = 
+            // parse_numeric_expression(n.substr(1,operator_index-1));
+            // NumericExpression* right = 
+            // parse_numeric_expression(n.substr(operator_index+1,n.size()-2-operator_index));
             if (is_add){return new AdditionExpression(left, right);}
             if (is_multiply){return new MultiplicationExpression(left, right);}
             if (is_subtract){return new SubtractionExpression(left, right);}
@@ -299,8 +332,76 @@ void Interpreter::write(ostream& out) {
 }
 
 void Interpreter :: execute(){
-    for (unsigned int i=0; i<entire_program.size(); i++){
+    for (unsigned int i=0; i<entire_program.size(); i++){ // store the program in a map
         program_map[entire_program[i]->get_line()] = entire_program[i];
     }
-    
-}
+    map<int, Command*> :: iterator it; // iterate through the entire program
+    for (it = program_map.begin(); it != program_map.end(); ++it){
+        line_n = it->first;
+        // different commands
+        if (it->second->get_name() == "END"){
+            break;
+        }
+        else if (it->second->get_name() == "RETURN"){
+            if (origin_line.empty()){
+                throw runtime_error("No matching GOSUB for RETURN."); // use exception
+            }
+            it = program_map.find(origin_line.top());
+            origin_line.pop();
+        }
+        else if (it->second->get_name() == "PRINT"){
+            cout << it->second->get_nexp()->get_value() << endl; // prints out value
+        }
+        else if (it->second->get_name() == "LET"){
+            if (it->second->get_var()->is_arr()){ // array variable
+                int index = it->second->get_var()->get_index()->get_value();
+                string name = it->second->get_var()->get_name();
+                // variable not declared before
+                if (inf_arr.find(name) == inf_arr.end()){
+                    vector<int> temp;
+                    for (int i=0; i<index; i++){
+                        temp.push_back(0);
+                    }
+                    temp.push_back(it->second->get_nexp()->get_value());
+                    inf_arr[name] = temp;
+                }
+                // declared before
+                else{
+                    // index >= size
+                    if (index >= (int)inf_arr[name].size()){
+                        for (int i=(int)inf_arr[name].size(); i<index; i++){
+                            inf_arr[name].push_back(0);
+                        }
+                        inf_arr[name].push_back(it->second->get_nexp()->get_value());
+                    }
+                    // index < size
+                    else{
+                        inf_arr[name][index] = it->second->get_nexp()->get_value();
+                    }
+                }
+                it->second->get_var()->set_value(it->second->get_nexp()); //set value
+            }
+            else{ // integer variable
+                string name = it->second->get_var()->get_name();
+                it->second->get_var()->set_value(it->second->get_nexp()); //set value
+            }
+        } // if LET
+        else if (it->second->get_name() == "GOTO"){
+            it = program_map.find(it->second->get_jline());
+            --it; // cancel out the ++i
+        }
+        else if (it->second->get_name() == "GOSUB"){
+            origin_line.push(it->second->get_line());
+            it = program_map.find(it->second->get_jline());
+            --it;
+        }
+        else if (it->second->get_name() == "IF"){
+            if (it->second->get_bexp()->get_value()){
+                it = program_map.find(it->second->get_jline());
+                --it;
+            }
+        }
+    } // for iterator
+} // void execute
+// returns line number for error message
+int Interpreter :: get_line_n(){return line_n;}

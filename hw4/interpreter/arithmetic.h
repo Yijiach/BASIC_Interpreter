@@ -29,6 +29,8 @@ public:
     void set_value(NumericExpression* nexp); // set value for the variable
     int get_value();
     std::string get_name();
+    virtual bool is_arr() = 0;
+    virtual NumericExpression* get_index(){return 0;}
 protected:
 	std::string name_;
 	int val_; // store value of the variable
@@ -38,6 +40,7 @@ class IntegerVariable : public Variable{
 public:
 	IntegerVariable(std::string name, int val);
 	std::string format();
+    bool is_arr();
 };
 
 class ArrayVariable : public Variable{
@@ -45,6 +48,8 @@ public:
 	ArrayVariable(std::string name, NumericExpression *index, int val);
 	virtual ~ArrayVariable();
     std::string format();
+    bool is_arr();
+    NumericExpression* get_index();
 private:
 	NumericExpression *index_;
 };

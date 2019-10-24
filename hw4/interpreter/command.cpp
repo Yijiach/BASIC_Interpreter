@@ -7,7 +7,12 @@ Print :: Print(int line, NumericExpression* nexp) : Command(line){
 	line_ = line;
 	nexp_ = nexp;
 }
-Print :: ~Print(){delete this->nexp_;}
+Print :: ~Print(){
+	if (nexp_ != NULL){
+		delete this->nexp_;
+		nexp_ = NULL;
+	}
+}
 string Print :: format(){
 	return to_string(line_) + " PRINT " + this->nexp_->format();
 }
@@ -19,8 +24,14 @@ Let :: Let(int line, Variable* var, NumericExpression* nexp) : Command(line){
 }
 	
 Let :: ~Let(){
-	delete this->var_;
-	delete this->nexp_;
+	if (var_ != NULL){
+		delete this->var_;
+		var_ = NULL;
+	}
+	if (nexp_ != NULL){
+		delete this->nexp_;
+		nexp_ = NULL;
+	}
 }
 string Let :: format(){
 	return to_string(line_) + 
@@ -40,7 +51,12 @@ IfThen :: IfThen(int line, BooleanExpression* bexp, int jline) : Command(line){
 	bexp_ = bexp;
 	jline_ = jline;
 }
-IfThen :: ~IfThen(){delete this->bexp_;}
+IfThen :: ~IfThen(){
+	if (bexp_ != NULL){
+		delete this->bexp_;
+		bexp_ = NULL;
+	}
+}
 string IfThen :: format(){
 	return to_string(line_) + 
 	" IF [" + this->bexp_->format() + "] THEN <" + to_string(jline_) + ">";
@@ -67,4 +83,50 @@ string End :: format(){return to_string(line_) + " END";}
 // get line
 int Command :: get_line(){
 	return line_;
+}
+
+// get name
+string Print :: get_name(){
+	return "PRINT";
+}
+string Let :: get_name(){
+	return "LET";
+}
+string GoTo :: get_name(){
+	return "GOTO";
+}
+string IfThen :: get_name(){
+	return "IF";
+}
+string GoSub :: get_name(){
+	return "GOSUB";
+}
+string Return :: get_name(){
+	return "RETURN";
+}
+string End :: get_name(){
+	return "END";
+}
+
+// get nexp, vars, bexp, jline
+NumericExpression* Print :: get_nexp(){
+	return nexp_;
+}
+Variable* Let :: get_var(){
+	return var_;
+}
+NumericExpression* Let :: get_nexp(){
+	return nexp_;
+}
+int GoTo :: get_jline(){
+	return jline_;
+}
+BooleanExpression* IfThen :: get_bexp(){
+	return bexp_;
+}
+int IfThen :: get_jline(){
+	return jline_;
+}
+int GoSub :: get_jline(){
+	return jline_;
 }

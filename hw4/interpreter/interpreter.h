@@ -9,6 +9,8 @@
 #include <vector>
 #include <sstream>
 #include <map>
+#include <stack>
+#include <stdexcept>
 
 class Interpreter {
 public:
@@ -22,13 +24,17 @@ public:
     BooleanExpression* parse_boolean_expression(std::string n);
     // actual execution of codes
     void execute();
+    int get_line_n(); // returns line number
 private:
     void parse(std::istream& in);
     std::vector<Command*> entire_program;
     // memory used to store pieces of program
     std::map<int, Command*> program_map;
-    std::map<std::string, int> int_variable_map;
-    std::map<std::string, std::vector<int>> arr_variable_map;
+    std::map<std::string, Variable*> int_variable_map;
+    std::map<std::string, Variable*> arr_variable_map;
+    std::map<std::string, std::vector<int>> inf_arr; // infinite sized arrays
+    std::stack<int> origin_line; // origin of gosub lines
+    int line_n; // stores line number for error message
 };
 
 #endif

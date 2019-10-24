@@ -7,8 +7,14 @@ BooleanExpression(){
 	right_ = right;
 }
 LargerThan :: ~LargerThan(){
-	delete this->left_;
-	delete this->right_;
+	if (left_ != NULL){
+        delete this->left_;
+        left_ = NULL;
+    }
+    if (right_ != NULL){
+        delete this->right_;
+        right_ = NULL;
+    }
 }
 string LargerThan :: format(){
 	return this->left_->format() + " > " + this->right_->format();
@@ -20,8 +26,14 @@ BooleanExpression(){
 	right_ = right;
 }
 LessThan :: ~LessThan(){
-	delete this->left_;
-	delete this->right_;
+	if (left_ != NULL){
+        delete this->left_;
+        left_ = NULL;
+    }
+    if (right_ != NULL){
+        delete this->right_;
+        right_ = NULL;
+    }
 }
 string LessThan :: format(){
 	return this->left_->format() + " < " + this->right_->format();
@@ -33,8 +45,14 @@ BooleanExpression(){
 	right_ = right;
 }
 EqualTo :: ~EqualTo(){
-	delete this->left_;
-	delete this->right_;
+	if (left_ != NULL){
+        delete this->left_;
+        left_ = NULL;
+    }
+    if (right_ != NULL){
+        delete this->right_;
+        right_ = NULL;
+    }
 }
 string EqualTo :: format(){
 	return this->left_->format() + " = " + this->right_->format();
