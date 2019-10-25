@@ -6,20 +6,41 @@ Interpreter::Interpreter(istream& in) { // constructor
 }
 
 Interpreter::~Interpreter() { // destructor
-	// for (unsigned int i=0; i<entire_program.size(); i++){
- //        if (entire_program[i] != NULL){
- //            delete entire_program[i];
- //            entire_program[i] = NULL;
- //        }
-	// }
- //    entire_program.clear();
+    map<string, Variable*> :: iterator it;
+    for (it = int_variable_map.begin(); it != int_variable_map.end(); ++it){
+        delete it->second; // delete int variables
+    }
+    for (it = arr_variable_map.begin(); it != arr_variable_map.end(); ++it){
+        delete it->second; // delete array variables
+    }
+    map<string, NumericExpression*> :: iterator it2;
+    for (it2 = nexp_map.begin(); it2 != nexp_map.end(); ++it2){
+        delete it2->second; // delete numeric expressions
+    }
+    map<int, Command*> :: iterator it3;
+    for (it3 = program_map.begin(); it3 != program_map.end(); ++it3){
+        delete it3->second; // delete commands
+    }
+    map<int, Constant*> :: iterator it4;
+    for (it4 = const_map.begin(); it4 != const_map.end(); ++it4){
+        delete it4->second; // delete constants
+    }
+    map<string, BooleanExpression*> :: iterator it5;
+    for (it5 = bexp_map.begin(); it5 != bexp_map.end(); ++it5){
+        delete it5->second; // delete constants
+    }
 }
 
 Constant* Interpreter :: parse_constant(string n){ // parse constant
     stringstream s(n);
     int val = 0;
     s >> val;
-    return new Constant(val);
+    if (const_map.find(val) != const_map.end()){
+        return const_map[val];
+    }
+    Constant* temp = new Constant(val);
+    const_map[val] = temp;
+    return temp;
 }
 
 Variable* Interpreter :: parse_variable(string n){ // parse variable
@@ -41,7 +62,7 @@ Variable* Interpreter :: parse_variable(string n){ // parse variable
         if (arr_variable_map.find(name+string_index) != arr_variable_map.end()){
             if (index->get_value() == 
                 arr_variable_map[name+string_index]->get_index()->get_value()){
-                return arr_variable_map[name+string_index];
+                return arr_variable_map[name+string_index]; // if variable already exist
             }
         }
         ArrayVariable* temp =  new ArrayVariable(name, index, 0);
@@ -50,7 +71,7 @@ Variable* Interpreter :: parse_variable(string n){ // parse variable
     }
     else{
         if (int_variable_map.find(n) != int_variable_map.end()){
-            return int_variable_map[n];
+            return int_variable_map[n]; // if variable already exist
         }
         IntegerVariable* temp = new IntegerVariable(n, 0);
         int_variable_map[n] = temp;
@@ -125,14 +146,54 @@ NumericExpression* Interpreter :: parse_numeric_expression(string n){
             else{
                 right = parse_variable(r);
             }
-            // NumericExpression* left = 
-            // parse_numeric_expression(n.substr(1,operator_index-1));
-            // NumericExpression* right = 
-            // parse_numeric_expression(n.substr(operator_index+1,n.size()-2-operator_index));
-            if (is_add){return new AdditionExpression(left, right);}
-            if (is_multiply){return new MultiplicationExpression(left, right);}
-            if (is_subtract){return new SubtractionExpression(left, right);}
-            if (is_divide){return new DivisionExpression(left, right);}
+            if (is_add){
+                AdditionExpression* temp = new AdditionExpression(left, right);
+                if (nexp_map.find(temp->format()) != nexp_map.end()){
+                    string numeric_string = temp->format();
+                    delete temp; // temp only used to check format
+                    return nexp_map[numeric_string];
+                }
+                delete temp;
+                AdditionExpression* new_nexp = new AdditionExpression(left, right);
+                nexp_map[new_nexp->format()] = new_nexp;
+                return new_nexp; // if not already exist
+            }
+            if (is_multiply){
+                MultiplicationExpression* temp = new MultiplicationExpression(left, right);
+                if (nexp_map.find(temp->format()) != nexp_map.end()){
+                    string numeric_string = temp->format();
+                    delete temp; // temp only used to check format
+                    return nexp_map[numeric_string];
+                }
+                delete temp;
+                MultiplicationExpression* new_nexp = new MultiplicationExpression(left, right);
+                nexp_map[new_nexp->format()] = new_nexp;
+                return new_nexp; // if not already exist
+            }
+            if (is_subtract){
+                SubtractionExpression* temp = new SubtractionExpression(left, right);
+                if (nexp_map.find(temp->format()) != nexp_map.end()){
+                    string numeric_string = temp->format();
+                    delete temp; // temp only used to check format
+                    return nexp_map[numeric_string];
+                }
+                delete temp;
+                SubtractionExpression* new_nexp = new SubtractionExpression(left, right);
+                nexp_map[new_nexp->format()] = new_nexp;
+                return new_nexp; // if not already exist
+            }
+            if (is_divide){
+                DivisionExpression* temp = new DivisionExpression(left, right);
+                if (nexp_map.find(temp->format()) != nexp_map.end()){
+                    string numeric_string = temp->format();
+                    delete temp; // temp only used to check format
+                    return nexp_map[numeric_string];
+                }
+                delete temp;
+                DivisionExpression* new_nexp = new DivisionExpression(left, right);
+                nexp_map[new_nexp->format()] = new_nexp;
+                return new_nexp; // if not already exist
+            }
         }
         else{
             int left_count = 0;
@@ -172,10 +233,54 @@ NumericExpression* Interpreter :: parse_numeric_expression(string n){
             parse_numeric_expression(n.substr(1,operator_index-1));
             NumericExpression* right = 
             parse_numeric_expression(n.substr(operator_index+1,n.size()-2-operator_index));
-            if (is_add){return new AdditionExpression(left, right);}
-            if (is_multiply){return new MultiplicationExpression(left, right);}
-            if (is_subtract){return new SubtractionExpression(left, right);}
-            if (is_divide){return new DivisionExpression(left, right);}
+            if (is_add){
+                AdditionExpression* temp = new AdditionExpression(left, right);
+                if (nexp_map.find(temp->format()) != nexp_map.end()){
+                    string numeric_string = temp->format();
+                    delete temp; // temp only used to check format
+                    return nexp_map[numeric_string];
+                }
+                delete temp;
+                AdditionExpression* new_nexp = new AdditionExpression(left, right);
+                nexp_map[new_nexp->format()] = new_nexp;
+                return new_nexp; // if not already exist
+            }
+            if (is_multiply){
+                MultiplicationExpression* temp = new MultiplicationExpression(left, right);
+                if (nexp_map.find(temp->format()) != nexp_map.end()){
+                    string numeric_string = temp->format();
+                    delete temp; // temp only used to check format
+                    return nexp_map[numeric_string];
+                }
+                delete temp;
+                MultiplicationExpression* new_nexp = new MultiplicationExpression(left, right);
+                nexp_map[new_nexp->format()] = new_nexp;
+                return new_nexp; // if not already exist
+            }
+            if (is_subtract){
+                SubtractionExpression* temp = new SubtractionExpression(left, right);
+                if (nexp_map.find(temp->format()) != nexp_map.end()){
+                    string numeric_string = temp->format();
+                    delete temp; // temp only used to check format
+                    return nexp_map[numeric_string];
+                }
+                delete temp;
+                SubtractionExpression* new_nexp = new SubtractionExpression(left, right);
+                nexp_map[new_nexp->format()] = new_nexp;
+                return new_nexp; // if not already exist
+            }
+            if (is_divide){
+                DivisionExpression* temp = new DivisionExpression(left, right);
+                if (nexp_map.find(temp->format()) != nexp_map.end()){
+                    string numeric_string = temp->format();
+                    delete temp; // temp only used to check format
+                    return nexp_map[numeric_string];
+                }
+                delete temp;
+                DivisionExpression* new_nexp = new DivisionExpression(left, right);
+                nexp_map[new_nexp->format()] = new_nexp;
+                return new_nexp; // if not already exist
+            }
         }
     }
     return 0;
@@ -204,9 +309,42 @@ BooleanExpression* Interpreter :: parse_boolean_expression(string n){
     parse_numeric_expression(n.substr(0,operator_index));
     NumericExpression* right = 
     parse_numeric_expression(n.substr(operator_index+1,n.size()-1-operator_index));
-    if (is_equal){return new EqualTo(left, right);}
-    if (is_larger){return new LessThan(right, left);} // change X>Y to Y<X
-    if (is_less){return new LessThan(left, right);}
+    if (is_equal){
+        EqualTo* temp = new EqualTo(left, right);
+        if (bexp_map.find(temp->format()) != bexp_map.end()){
+            string bool_string = temp->format();
+            delete temp; // temp only used to check format
+            return bexp_map[bool_string];
+        }
+        delete temp;
+        EqualTo* new_bexp = new EqualTo(left, right);
+        bexp_map[new_bexp->format()] = new_bexp;
+        return new_bexp; // if not already exist
+    }
+    if (is_larger){
+        LessThan* temp = new LessThan(right, left);
+        if (bexp_map.find(temp->format()) != bexp_map.end()){
+            string bool_string = temp->format();
+            delete temp; // temp only used to check format
+            return bexp_map[bool_string];
+        }
+        delete temp;
+        LessThan* new_bexp = new LessThan(right, left);
+        bexp_map[new_bexp->format()] = new_bexp;
+        return new_bexp; // if not already exist
+    } // change X>Y to Y<X
+    if (is_less){
+        LessThan* temp = new LessThan(left, right);
+        if (bexp_map.find(temp->format()) != bexp_map.end()){
+            string bool_string = temp->format();
+            delete temp; // temp only used to check format
+            return bexp_map[bool_string];
+        }
+        delete temp;
+        LessThan* new_bexp = new LessThan(left, right);
+        bexp_map[new_bexp->format()] = new_bexp;
+        return new_bexp; // if not already exist
+    }
     return 0;
 }
 
@@ -367,16 +505,28 @@ void Interpreter :: execute(){
             }
         } // if LET
         else if (it->second->get_name() == "GOTO"){
+            if (program_map.find(it->second->get_jline()) == program_map.end()){
+                throw runtime_error("GOTO to non-existent line " + 
+                    to_string(it->second->get_jline()) + ".");
+            }
             it = program_map.find(it->second->get_jline());
             --it; // cancel out the ++i
         }
         else if (it->second->get_name() == "GOSUB"){
+            if (program_map.find(it->second->get_jline()) == program_map.end()){
+                throw runtime_error("GOSUB to non-existent line " + 
+                    to_string(it->second->get_jline()) + ".");
+            }
             origin_line.push(it->second->get_line());
             it = program_map.find(it->second->get_jline());
             --it;
         }
         else if (it->second->get_name() == "IF"){
             if (it->second->get_bexp()->get_value()){
+                if (program_map.find(it->second->get_jline()) == program_map.end()){
+                    throw runtime_error("IF jump to non-existent line " + 
+                        to_string(it->second->get_jline()) + ".");
+                }
                 it = program_map.find(it->second->get_jline());
                 --it;
             }

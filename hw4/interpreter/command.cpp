@@ -8,10 +8,7 @@ Print :: Print(int line, NumericExpression* nexp) : Command(line){
 	nexp_ = nexp;
 }
 Print :: ~Print(){
-	if (nexp_ != NULL){
-		delete this->nexp_;
-		nexp_ = NULL;
-	}
+	//delete this->nexp_;
 }
 string Print :: format(){
 	return to_string(line_) + " PRINT " + this->nexp_->format();
@@ -22,16 +19,9 @@ Let :: Let(int line, Variable* var, NumericExpression* nexp) : Command(line){
 	var_ = var;
 	nexp_ = nexp;
 }
-	
 Let :: ~Let(){
-	if (var_ != NULL){
-		delete this->var_;
-		var_ = NULL;
-	}
-	if (nexp_ != NULL){
-		delete this->nexp_;
-		nexp_ = NULL;
-	}
+	// delete this->var_;
+	// delete this->nexp_;
 }
 string Let :: format(){
 	return to_string(line_) + 
@@ -52,10 +42,7 @@ IfThen :: IfThen(int line, BooleanExpression* bexp, int jline) : Command(line){
 	jline_ = jline;
 }
 IfThen :: ~IfThen(){
-	if (bexp_ != NULL){
-		delete this->bexp_;
-		bexp_ = NULL;
-	}
+	//delete this->bexp_;
 }
 string IfThen :: format(){
 	return to_string(line_) + 

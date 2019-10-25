@@ -28,10 +28,14 @@ public:
 private:
     void parse(std::istream& in);
     std::vector<Command*> entire_program;
-    // memory used to store pieces of program
-    std::map<int, Command*> program_map;
-    std::map<std::string, Variable*> int_variable_map;
+
+    std::map<int, Command*> program_map; // store lines of program
+    std::map<std::string, Variable*> int_variable_map; // stores int
     std::map<std::string, Variable*> arr_variable_map; // map from name+index to array variable
+    std::map<std::string, NumericExpression*> nexp_map; // stores numeric expressions
+    std::map<std::string, BooleanExpression*> bexp_map; // stores boolean expressions
+    std::map<int, Constant*> const_map; // map that stores constants
+
     std::stack<int> origin_line; // origin of gosub lines
     int line_n; // stores line number for error message
 };

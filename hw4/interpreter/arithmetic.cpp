@@ -24,10 +24,7 @@ Variable(name, val) {
     val_ = val;
 }
 ArrayVariable :: ~ArrayVariable(){
-    if (index_ != NULL){
-        delete this->index_;
-        index_ = NULL;
-    }
+    //delete this->index_;
 }  
 string ArrayVariable :: format(){
     return name_ + "[" + this->index_->format() + "]";
@@ -39,14 +36,8 @@ NumericExpression(){
     right_ = right;
 } 
 AdditionExpression::~AdditionExpression() {
-    if (left_ != NULL){
-        delete this->left_;
-        left_ = NULL;
-    }
-    if (right_ != NULL){
-        delete this->right_;
-        right_ = NULL;
-    }
+    // delete this->left_;
+    // delete this->right_;
 }
 string AdditionExpression::format(){
     return "(" + this->left_->format() + " + " + this->right_->format() + ")";
@@ -58,14 +49,8 @@ NumericExpression(){
     right_ = right;
 } 
 SubtractionExpression::~SubtractionExpression() {
-    if (left_ != NULL){
-        delete this->left_;
-        left_ = NULL;
-    }
-    if (right_ != NULL){
-        delete this->right_;
-        right_ = NULL;
-    }
+    // delete this->left_;
+    // delete this->right_;
 }
 string SubtractionExpression::format(){
     return "(" + this->left_->format() + " - " + this->right_->format() + ")";
@@ -78,14 +63,8 @@ NumericExpression(){
     right_ = right;
 } 
 MultiplicationExpression::~MultiplicationExpression() {
-    if (left_ != NULL){
-        delete this->left_;
-        left_ = NULL;
-    }
-    if (right_ != NULL){
-        delete this->right_;
-        right_ = NULL;
-    }
+    // delete this->left_;
+    // delete this->right_;
 }
 string MultiplicationExpression::format(){
     return "(" + this->left_->format() + " * " + this->right_->format() + ")";
@@ -97,14 +76,8 @@ NumericExpression(){
     right_ = right;
 } 
 DivisionExpression::~DivisionExpression() {
-    if (left_ != NULL){
-        delete this->left_;
-        left_ = NULL;
-    }
-    if (right_ != NULL){
-        delete this->right_;
-        right_ = NULL;
-    }
+    // delete this->left_;
+    // delete this->right_;
 }
 string DivisionExpression::format(){
     return "(" + this->left_->format() + " / " + this->right_->format() + ")";
@@ -133,6 +106,8 @@ int MultiplicationExpression :: get_value(){
 }
 int DivisionExpression :: get_value(){
     if (right_->get_value() == 0){
+        // add all the pieces of the entire string together
+        // to get the error message
         string temp1 = "Division by 0: ";
         string temp2 = to_string(left_->get_value());
         string temp3 = " = ";
@@ -141,10 +116,7 @@ int DivisionExpression :: get_value(){
         string temp6 = ".";
         string temp = temp1 + left_->format() + temp3 + temp2 + temp5 + 
         right_->format() + temp3 + temp4 + temp6;
-        // string temp = "Division by 0: " + left_->format() + " = " +
-        //  left_->get_value() + ", " + right_->format() + " = " +
-        //  right_->get_value() + ".";
-         throw runtime_error(temp); // division by 0 error
+        throw runtime_error(temp); // division by 0 error
     }
     return left_->get_value() / right_->get_value();
 }
