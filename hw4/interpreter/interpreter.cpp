@@ -1,10 +1,8 @@
 #include "interpreter.h"
 using namespace std;
-
 Interpreter::Interpreter(istream& in) { // constructor
     this->parse(in);
 }
-
 Interpreter::~Interpreter() { // destructor
     map<string, Variable*> :: iterator it;
     for (it = int_variable_map.begin(); it != int_variable_map.end(); ++it){
@@ -27,10 +25,9 @@ Interpreter::~Interpreter() { // destructor
     }
     map<string, BooleanExpression*> :: iterator it5;
     for (it5 = bexp_map.begin(); it5 != bexp_map.end(); ++it5){
-        delete it5->second; // delete constants
+        delete it5->second; // delete bools
     }
 }
-
 Constant* Interpreter :: parse_constant(string n){ // parse constant
     stringstream s(n);
     int val = 0;
@@ -42,7 +39,6 @@ Constant* Interpreter :: parse_constant(string n){ // parse constant
     const_map[val] = temp;
     return temp;
 }
-
 Variable* Interpreter :: parse_variable(string n){ // parse variable
     if (n[n.size()-1] == ']'){
         int start = 0;
@@ -97,12 +93,8 @@ NumericExpression* Interpreter :: parse_numeric_expression(string n){
             }
         }
         if (most_inside){
-            bool is_add = false;
-            bool is_multiply = false;
-            bool is_subtract = false;
-            bool is_divide = false;
-            // find the position of the operator
-            int operator_index = 0; 
+            bool is_add = false, is_multiply = false, is_subtract = false, is_divide = false;
+            int operator_index = 0; // find the position of the operator
             for (unsigned int i=1; i<n.size()-1; i++){
                 if (n[i] == '+'){
                     is_add = true;
@@ -126,14 +118,14 @@ NumericExpression* Interpreter :: parse_numeric_expression(string n){
                     break;
                 }
             }
-            string l = n.substr(1,operator_index-1);
-            string r = n.substr(operator_index+1,n.size()-2-operator_index);
+            string l = n.substr(1,operator_index-1); // left
+            string r = n.substr(operator_index+1,n.size()-2-operator_index); // right
             NumericExpression* left = NULL;
             NumericExpression* right = NULL;
             if ((l[0] == '-') || (l[0] == '0') || (l[0] == '1') || (l[0] == '1')
                 || (l[0] == '2') || (l[0] == '3') || (l[0] == '4') || (l[0] == '5')
                 || (l[0] == '6') || (l[0] == '7') || (l[0] == '8') || (l[0] == '9')){
-                left = parse_constant(l);
+                left = parse_constant(l); // parse constant after chacking the first digit
             }
             else{
                 left = parse_variable(l);
@@ -141,7 +133,7 @@ NumericExpression* Interpreter :: parse_numeric_expression(string n){
             if ((r[0] == '-') || (r[0] == '0') || (r[0] == '1') || (r[0] == '1')
                 || (r[0] == '2') || (r[0] == '3') || (r[0] == '4') || (r[0] == '5')
                 || (r[0] == '6') || (r[0] == '7') || (r[0] == '8') || (r[0] == '9')){
-                right = parse_constant(r);
+                right = parse_constant(r); // parse constant after chacking the first digit
             }
             else{
                 right = parse_variable(r);
@@ -196,13 +188,8 @@ NumericExpression* Interpreter :: parse_numeric_expression(string n){
             }
         }
         else{
-            int left_count = 0;
-            int right_count = 0;
-            bool is_add = false;
-            bool is_multiply = false;
-            bool is_subtract = false;
-            bool is_divide = false;
-            int operator_index = 0;
+            int left_count = 0, right_count = 0, operator_index = 0;
+            bool is_add = false, is_multiply = false, is_subtract = false, is_divide = false;
             for (unsigned int i=0; i<n.size()-1; i++){
                 // count the number of ()
                 if (n[i] == '('){left_count++;}
@@ -218,10 +205,10 @@ NumericExpression* Interpreter :: parse_numeric_expression(string n){
                     is_multiply = true;
                     break;
                 }
-                else if ((n[i] == '-') && (left_count == right_count+1) && (i != 1)){// case -1 - -1
+                else if ((n[i] == '-') && (left_count == right_count+1) && (i != 1)){
                     operator_index = i;
                     is_subtract = true;
-                    break;
+                    break; // edge case (-1 - -1)
                 }
                 else if ((n[i] == '/') && (left_count == right_count+1)){
                     operator_index = i;
@@ -285,11 +272,8 @@ NumericExpression* Interpreter :: parse_numeric_expression(string n){
     }
     return 0;
 }
-// parse boolean expression
-BooleanExpression* Interpreter :: parse_boolean_expression(string n){
-    bool is_equal = false;
-    bool is_larger = false;
-    bool is_less = false;
+BooleanExpression* Interpreter :: parse_boolean_expression(string n){ // parse boolean expression
+    bool is_equal = false, is_larger = false, is_less = false;
     int operator_index = 0;
     for (unsigned int i=0; i<n.size(); i++){
         if (n[i] == '='){
@@ -347,15 +331,12 @@ BooleanExpression* Interpreter :: parse_boolean_expression(string n){
     }
     return 0;
 }
-
-void Interpreter::parse(istream& in) {
+void Interpreter::parse(istream& in) { // parse command and store them in vector
     string line;
     while (getline(in, line)) {
         int line_number;
         stringstream stream(line);
         stream >> line_number;
-
-        // Your code here
         string command_name;
         stream >> command_name;
         if (command_name == "PRINT"){
@@ -467,71 +448,9 @@ void Interpreter::parse(istream& in) {
         }
     }
 }
-
-void Interpreter::write(ostream& out) {
+void Interpreter::write(ostream& out) { // pretty print
     for (unsigned int i=0; i<entire_program.size(); i++){
         out << entire_program[i]->format() << endl;
     }
 }
-
-void Interpreter :: execute(){
-    for (unsigned int i=0; i<entire_program.size(); i++){ // store the program in a map
-        program_map[entire_program[i]->get_line()] = entire_program[i];
-    }
-    map<int, Command*> :: iterator it; // iterate through the entire program
-    for (it = program_map.begin(); it != program_map.end(); ++it){
-        line_n = it->first;
-        // different commands
-        if (it->second->get_name() == "END"){
-            break;
-        }
-        else if (it->second->get_name() == "RETURN"){
-            if (origin_line.empty()){
-                throw runtime_error("No matching GOSUB for RETURN."); // use exception
-            }
-            it = program_map.find(origin_line.top());
-            origin_line.pop();
-        }
-        else if (it->second->get_name() == "PRINT"){
-            cout << it->second->get_nexp()->get_value() << endl; // prints out value
-        }
-        else if (it->second->get_name() == "LET"){
-            if (it->second->get_var()->is_arr()){ // array variable
-                it->second->get_var()->set_value(it->second->get_nexp()); //set value
-            }
-            else{ // integer variable
-                string name = it->second->get_var()->get_name();
-                it->second->get_var()->set_value(it->second->get_nexp()); //set value
-            }
-        } // if LET
-        else if (it->second->get_name() == "GOTO"){
-            if (program_map.find(it->second->get_jline()) == program_map.end()){
-                throw runtime_error("GOTO to non-existent line " + 
-                    to_string(it->second->get_jline()) + ".");
-            }
-            it = program_map.find(it->second->get_jline());
-            --it; // cancel out the ++i
-        }
-        else if (it->second->get_name() == "GOSUB"){
-            if (program_map.find(it->second->get_jline()) == program_map.end()){
-                throw runtime_error("GOSUB to non-existent line " + 
-                    to_string(it->second->get_jline()) + ".");
-            }
-            origin_line.push(it->second->get_line());
-            it = program_map.find(it->second->get_jline());
-            --it;
-        }
-        else if (it->second->get_name() == "IF"){
-            if (it->second->get_bexp()->get_value()){
-                if (program_map.find(it->second->get_jline()) == program_map.end()){
-                    throw runtime_error("IF jump to non-existent line " + 
-                        to_string(it->second->get_jline()) + ".");
-                }
-                it = program_map.find(it->second->get_jline());
-                --it;
-            }
-        }
-    } // for iterator
-} // void execute
-// returns line number for error message
-int Interpreter :: get_line_n(){return line_n;}
+int Interpreter :: get_line_n(){return line_n;} // returns line number for error message
