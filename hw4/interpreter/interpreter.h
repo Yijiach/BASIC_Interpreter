@@ -38,6 +38,8 @@ private:
 
     std::stack<int> origin_line; // origin of gosub lines
     int line_n; // stores line number for error message
+    int line_number; // line number used while parsing
+    std::map<int, Variable*> inf_index_arrays; // infinite index arrays
 };
 
 #endif

@@ -51,8 +51,18 @@ Variable* Interpreter :: parse_variable(string n){ // parse variable
         }
         end = n.size()-1;
         string name = n.substr(0, start);
-        NumericExpression* index = 
-        parse_numeric_expression(n.substr(start+1, end-start-1));
+        NumericExpression* index = parse_numeric_expression(n.substr(start+1, end-start-1));
+        if (index->is_infinite()){ // check division by 0 error
+            if (arr_variable_map.find(name+"inf") != arr_variable_map.end()){
+                return arr_variable_map[name+"inf"];
+            }
+            ArrayVariable* temp =  new ArrayVariable(name, index, 0);
+            arr_variable_map[name+"inf"] = temp; // division by 0, set to "inf"
+            if (inf_index_arrays.find(line_number) == inf_index_arrays.end()){
+                inf_index_arrays[line_number] = temp; // store the array in map
+            }
+            return temp;
+        }
         string string_index = to_string(index->get_value());
         // return the previous array variable if both name and index are equal
         if (arr_variable_map.find(name+string_index) != arr_variable_map.end()){
@@ -334,7 +344,7 @@ BooleanExpression* Interpreter :: parse_boolean_expression(string n){ // parse b
 void Interpreter::parse(istream& in) { // parse command and store them in vector
     string line;
     while (getline(in, line)) {
-        int line_number;
+        //int line_number;
         stringstream stream(line);
         stream >> line_number;
         string command_name;

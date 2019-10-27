@@ -106,17 +106,9 @@ int MultiplicationExpression :: get_value(){
 }
 int DivisionExpression :: get_value(){
     if (right_->get_value() == 0){
-        // add all the pieces of the entire string together
-        // to get the error message
-        string temp1 = "Division by 0: ";
-        string temp2 = to_string(left_->get_value());
-        string temp3 = " = ";
-        string temp4 = to_string(right_->get_value());
-        string temp5 = ", ";
-        string temp6 = ".";
-        string temp = temp1 + left_->format() + temp3 + temp2 + temp5 + 
-        right_->format() + temp3 + temp4 + temp6;
-        throw runtime_error(temp); // division by 0 error
+        throw runtime_error("Division by 0: "+left_->format()+" = "+
+            to_string(left_->get_value())+", "+right_->format()+" = "+
+            to_string(right_->get_value())+"."); // division by 0 error
     }
     return left_->get_value() / right_->get_value();
 }
@@ -126,15 +118,48 @@ string Variable :: get_name(){
     return name_;
 }
 
-// check whether arr or int
-bool IntegerVariable :: is_arr(){
-    return false;
-}
-bool ArrayVariable :: is_arr(){
-    return true;
-}
-
 // get index
 NumericExpression* ArrayVariable :: get_index(){
     return index_;
+}
+
+// division by 0 while parsing handling
+bool DivisionExpression :: is_infinite(){
+    if (right_->is_infinite()){
+        return true;
+    }
+    else if (right_->get_value() == 0){
+        return true;
+    }
+    return false;
+}
+
+bool AdditionExpression :: is_infinite(){
+    bool infinite = false;
+    infinite = left_->is_infinite();
+    if (infinite){
+        return infinite; // if true, then already satisfies division by 0
+    }
+    infinite = right_->is_infinite();
+    return infinite; // after checking the right, return the boolean variable
+}
+
+bool SubtractionExpression :: is_infinite(){
+    bool infinite = false;
+    infinite = left_->is_infinite();
+    if (infinite){
+        return infinite; // if true, then already satisfies division by 0
+    }
+    infinite = right_->is_infinite();
+    return infinite; // after checking the right, return the boolean variable
+}
+
+bool MultiplicationExpression :: is_infinite(){
+    bool infinite = false;
+    infinite = left_->is_infinite();
+    if (infinite){
+        return infinite; // if true, then already satisfies division by 0
+    }
+    infinite = right_->is_infinite();
+    return infinite; // after checking the right, return the boolean variable
 }

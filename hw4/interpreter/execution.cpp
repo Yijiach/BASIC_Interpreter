@@ -1,6 +1,6 @@
 #include "interpreter.h"
 using namespace std;
-void Interpreter :: execute(){ // execute the things those commands actually do
+void Interpreter :: execute(){ // things those commands actually do
     for (unsigned int i=0; i<entire_program.size(); i++){ // store the program in a map
         program_map[entire_program[i]->get_line()] = entire_program[i];
     }
@@ -19,16 +19,16 @@ void Interpreter :: execute(){ // execute the things those commands actually do
             origin_line.pop();
         }
         else if (it->second->get_name() == "PRINT"){
+            if (inf_index_arrays.find(line_n) != inf_index_arrays.end()){ // invalid array check
+                cout << inf_index_arrays[line_n]->get_index()->get_value() << endl;
+            }
             cout << it->second->get_nexp()->get_value() << endl; // prints out value
         }
         else if (it->second->get_name() == "LET"){
-            if (it->second->get_var()->is_arr()){ // array variable
-                it->second->get_var()->set_value(it->second->get_nexp()); //set value
+            if (inf_index_arrays.find(line_n) != inf_index_arrays.end()){
+                cout << inf_index_arrays[line_n]->get_index()->get_value() << endl;
             }
-            else{ // integer variable
-                string name = it->second->get_var()->get_name();
-                it->second->get_var()->set_value(it->second->get_nexp()); //set value
-            }
+            it->second->get_var()->set_value(it->second->get_nexp()); //set value
         } // if LET
         else if (it->second->get_name() == "GOTO"){
             if (program_map.find(it->second->get_jline()) == program_map.end()){
@@ -48,6 +48,9 @@ void Interpreter :: execute(){ // execute the things those commands actually do
             --it;
         }
         else if (it->second->get_name() == "IF"){
+            if (inf_index_arrays.find(line_n) != inf_index_arrays.end()){ // invalid array check
+                cout << inf_index_arrays[line_n]->get_index()->get_value() << endl;
+            }
             if (it->second->get_bexp()->get_value()){
                 if (program_map.find(it->second->get_jline()) == program_map.end()){
                     throw runtime_error("IF jump to non-existent line " + 
