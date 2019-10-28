@@ -66,10 +66,7 @@ Variable* Interpreter :: parse_variable(string n){ // parse variable
         string string_index = to_string(index->get_value());
         // return the previous array variable if both name and index are equal
         if (arr_variable_map.find(name+string_index) != arr_variable_map.end()){
-            if (index->get_value() == 
-                arr_variable_map[name+string_index]->get_index()->get_value()){
-                return arr_variable_map[name+string_index]; // if variable already exist
-            }
+            return arr_variable_map[name+string_index]; // if variable already exist
         }
         ArrayVariable* temp =  new ArrayVariable(name, index, 0);
         arr_variable_map[name+string_index] = temp; // store it in map

@@ -1,0 +1,9 @@
+Analyzing your Code (15%)
+1. 
+	O(logn) n: number of lines of commands
+2. 
+	O(logn) n: number of lines of commands
+3. 
+	figure out value: O(1) set value or overwrite: O(m) m: number of individual variables or constants in the numeric expression
+4. 
+	figure out value: O(1) set value or overwrite: O(m) m: number of individual variables or constants in the numeric expression

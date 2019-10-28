@@ -25,7 +25,7 @@ void Interpreter :: execute(){ // things those commands actually do
             cout << it->second->get_nexp()->get_value() << endl; // prints out value
         }
         else if (it->second->get_name() == "LET"){
-            if (inf_index_arrays.find(line_n) != inf_index_arrays.end()){
+            if (inf_index_arrays.find(line_n) != inf_index_arrays.end()){ // invalid array check
                 cout << inf_index_arrays[line_n]->get_index()->get_value() << endl;
             }
             it->second->get_var()->set_value(it->second->get_nexp()); //set value

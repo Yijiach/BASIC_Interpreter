@@ -1,3 +1,3 @@
-1 PRINT A[5]
-2 LET A[(5/0)] 10
-3 IF (1/0) > (2/0) 5
+1 LET Y 2
+2 LET X[2] 5
+3 PRINT X[Y]
