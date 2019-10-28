@@ -31,12 +31,13 @@ public:
 	Variable(std::string name, int val);
 	virtual std::string format() = 0;
     virtual ~Variable(){}
-    void set_value(NumericExpression* nexp); // set value for the variable
+    void set_value(int n); // set value for the variable
     int get_value();
     std::string get_name();
     virtual NumericExpression* get_index(){return 0;}
     bool check_divide(){return false;}
     virtual bool is_infinite(){return false;}
+    virtual bool is_arr() = 0; // check if it is array variable
 protected:
 	std::string name_;
 	int val_; // store value of the variable
@@ -47,6 +48,7 @@ public:
 	IntegerVariable(std::string name, int val);
 	std::string format();
     bool is_infinite(){return false;}
+    bool is_arr(){return false;}
 };
 
 class ArrayVariable : public Variable{
@@ -56,6 +58,7 @@ public:
     std::string format();
     NumericExpression* get_index();
     bool is_infinite(){return index_->is_infinite();}
+    bool is_arr(){return true;}
 private:
 	NumericExpression *index_;
 };

@@ -19,16 +19,40 @@ void Interpreter :: execute(){ // things those commands actually do
             origin_line.pop();
         }
         else if (it->second->get_name() == "PRINT"){
-            if (inf_index_arrays.find(line_n) != inf_index_arrays.end()){ // invalid array check
-                cout << inf_index_arrays[line_n]->get_index()->get_value() << endl;
+            vector<NumericExpression*> index_check = index_map[line_n];
+            for (unsigned int i=0; i<index_check.size(); i++){
+                if (index_check[i]->is_infinite()){
+                    cout << index_check[i]->get_value() << endl; // output the division by 0 error message
+                }
             }
             cout << it->second->get_nexp()->get_value() << endl; // prints out value
         }
         else if (it->second->get_name() == "LET"){
-            if (inf_index_arrays.find(line_n) != inf_index_arrays.end()){ // invalid array check
-                cout << inf_index_arrays[line_n]->get_index()->get_value() << endl;
+            vector<NumericExpression*> index_check = index_map[line_n];
+            for (unsigned int i=0; i<index_check.size(); i++){
+                if (index_check[i]->is_infinite()){
+                    cout << index_check[i]->get_value() << endl; // output the division by 0 error message
+                }
             }
-            it->second->get_var()->set_value(it->second->get_nexp()); //set value
+            if (!it->second->get_var()->is_arr()){
+                it->second->get_var()->set_value(it->second->get_nexp()->get_value()); // set value
+            }
+            else{
+                it->second->get_var()->set_value(it->second->get_nexp()->get_value()); // set value
+                arr_value[it->second->get_var()->get_name()+
+                    to_string(it->second->get_var()->get_index()->get_value())] = 
+                it->second->get_nexp()->get_value(); // update the array value map
+            }
+            map<string, Variable*> :: iterator it_array;
+            for (it_array = arr_variable_map.begin(); it_array != arr_variable_map.end(); ++it_array){
+                Variable* temp = it_array->second;
+                if (!temp->get_index()->is_infinite()){
+                    temp->set_value(arr_value[temp->get_name()+to_string(temp->get_index()->get_value())]);
+                }
+                else{ // index division by 0
+                     // index division by 0 error
+                }
+            }
         } // if LET
         else if (it->second->get_name() == "GOTO"){
             if (program_map.find(it->second->get_jline()) == program_map.end()){
@@ -48,8 +72,11 @@ void Interpreter :: execute(){ // things those commands actually do
             --it;
         }
         else if (it->second->get_name() == "IF"){
-            if (inf_index_arrays.find(line_n) != inf_index_arrays.end()){ // invalid array check
-                cout << inf_index_arrays[line_n]->get_index()->get_value() << endl;
+            vector<NumericExpression*> index_check = index_map[line_n];
+            for (unsigned int i=0; i<index_check.size(); i++){
+                if (index_check[i]->is_infinite()){
+                    cout << index_check[i]->get_value() << endl; // output the division by 0 error message
+                }
             }
             if (it->second->get_bexp()->get_value()){
                 if (program_map.find(it->second->get_jline()) == program_map.end()){

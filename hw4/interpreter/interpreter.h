@@ -32,6 +32,7 @@ private:
     std::map<int, Command*> program_map; // store lines of program
     std::map<std::string, Variable*> int_variable_map; // stores int
     std::map<std::string, Variable*> arr_variable_map; // map from name+index to array variable
+    std::map<std::string, int> arr_value; // store array values
     std::map<std::string, NumericExpression*> nexp_map; // stores numeric expressions
     std::map<std::string, BooleanExpression*> bexp_map; // stores boolean expressions
     std::map<int, Constant*> const_map; // map that stores constants
@@ -39,7 +40,7 @@ private:
     std::stack<int> origin_line; // origin of gosub lines
     int line_n; // stores line number for error message
     int line_number; // line number used while parsing
-    std::map<int, Variable*> inf_index_arrays; // infinite index arrays
+    std::map<int, std::vector<NumericExpression*>> index_map; // infinite index arrays for error checking
 };
 
 #endif

@@ -15,12 +15,12 @@ int main(int argc, char* argv[]) {
     	return 1;
     }
     Interpreter interpreter(input);
+    //interpreter.write(cout);
     try{
         interpreter.execute(); // code executions
     } catch(exception& e) {
         cout << "Error in Line " << interpreter.get_line_n() << ": ";
         cout << e.what() << endl;
     } 
-    //interpreter.write(cout);
     return 0;
 }

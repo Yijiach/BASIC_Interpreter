@@ -84,8 +84,8 @@ string DivisionExpression::format(){
 }
 
 // set value function
-void Variable :: set_value(NumericExpression* nexp){
-    val_ = nexp->get_value();
+void Variable :: set_value(int n){
+    val_ = n;
 }
 
 // get_value functions

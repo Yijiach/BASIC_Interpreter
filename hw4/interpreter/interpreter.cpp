@@ -52,24 +52,25 @@ Variable* Interpreter :: parse_variable(string n){ // parse variable
         end = n.size()-1;
         string name = n.substr(0, start);
         NumericExpression* index = parse_numeric_expression(n.substr(start+1, end-start-1));
-        if (index->is_infinite()){ // check division by 0 error
-            if (arr_variable_map.find(name+"inf") != arr_variable_map.end()){
-                return arr_variable_map[name+"inf"];
-            }
-            ArrayVariable* temp =  new ArrayVariable(name, index, 0);
-            arr_variable_map[name+"inf"] = temp; // division by 0, set to "inf"
-            if (inf_index_arrays.find(line_number) == inf_index_arrays.end()){
-                inf_index_arrays[line_number] = temp; // store the array in map
-            }
-            return temp;
-        }
-        string string_index = to_string(index->get_value());
+        // if (index->is_infinite()){ // check division by 0 error
+        //     if (arr_variable_map.find(name+"inf") != arr_variable_map.end()){
+        //         return arr_variable_map[name+"inf"];
+        //     }
+        //     ArrayVariable* temp =  new ArrayVariable(name, index, 0);
+        //     arr_variable_map[name+"inf"] = temp; // division by 0, set to "inf"
+        //     if (inf_index_arrays.find(line_number) == inf_index_arrays.end()){
+        //         inf_index_arrays[line_number] = temp; // store the array in map
+        //     }
+        //     return temp;
+        // }
+        string string_index = index->format();
         // return the previous array variable if both name and index are equal
-        if (arr_variable_map.find(name+string_index) != arr_variable_map.end()){
-            return arr_variable_map[name+string_index]; // if variable already exist
-        }
+        // if (arr_variable_map.find(name+string_index) != arr_variable_map.end()){
+        //     return arr_variable_map[name+string_index]; // if variable already exist
+        // }
         ArrayVariable* temp =  new ArrayVariable(name, index, 0);
-        arr_variable_map[name+string_index] = temp; // store it in map
+        arr_variable_map[name+string_index+to_string(line_number)] = temp; // store it in map
+        index_map[line_number].push_back(temp->get_index());
         return temp;
     }
     else{
@@ -362,8 +363,13 @@ void Interpreter::parse(istream& in) { // parse command and store them in vector
             string remaining = "";
             int end_variable_index = 0; // if the close bracket is in the remaining
             string temp_string;
+            int left_bracket_count = 0, right_bracket_count = 0;
             while (stream >> temp_string){remaining += temp_string;}
-            if (variable_name[variable_name.size()-1] == ']'){ // Y[5]
+            for (unsigned int i=0; i<variable_name.size(); i++){
+                if (variable_name[i]=='['){left_bracket_count++;}
+                else if (variable_name[i]==']'){right_bracket_count++;}
+            }
+            if (left_bracket_count == right_bracket_count){ // Y[5]
                 variable = variable_name;
                 numeric_expression = remaining;
             }
