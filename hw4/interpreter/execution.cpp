@@ -47,11 +47,9 @@ void Interpreter :: execute(){ // things those commands actually do
             map<string, Variable*> :: iterator it_array;
             for (it_array = arr_variable_map.begin(); it_array != arr_variable_map.end(); ++it_array){
                 Variable* temp = it_array->second;
+                // update only when the array index has no division by 0 error
                 if (!temp->get_index()->is_infinite()){
                     temp->set_value(arr_value[temp->get_name()+to_string(temp->get_index()->get_value())]);
-                }
-                else{ // index division by 0
-                     // index division by 0 error
                 }
             }
         } // if LET
