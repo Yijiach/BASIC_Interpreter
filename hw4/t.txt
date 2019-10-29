@@ -1,8 +1,12 @@
-1 LET X 2
-2 LET X[1] 10
-3 LET X[5] 10
-4 LET X[(X[1]-5)] 12
-5 PRINT X[5]
-6 LET Y 6
-7 LET X[Y] 123
-8 PRINT X[6]
+1 LET A[ABC[(0+1)]] 1
+2 LET A[(ABC[(0+1)]     +1)] 2
+3 IF (A[ABC[(0+1)]]+2) < A[(ABC[(0+1)   ]+1)] THEN 4
+4 PRINT 5
+6 IF       (A[ABC[(0+1)]]+(A[ABC[    (0+1)]]+1)) > A[(ABC[(    0+1)]+1)] THEN 100
+7 END
+100 GOTO 101
+101 GOSUB 111
+103 PRINT 0
+111 PRINT (A[(ABC[(0      +1)]+1)] / A[(ABC[(0+1)]+1)])
+112 RETURN
+113 PRINT (A[(ABC[(0+1)]+1)] /(A[(ABC[(     0+1)] +1)] -2))

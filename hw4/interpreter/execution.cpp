@@ -43,6 +43,7 @@ void Interpreter :: execute(){ // things those commands actually do
                     to_string(it->second->get_var()->get_index()->get_value())] = 
                 it->second->get_nexp()->get_value(); // update the array value map
             }
+            // because some variable has changed, so must update other variables as well
             map<string, Variable*> :: iterator it_array;
             for (it_array = arr_variable_map.begin(); it_array != arr_variable_map.end(); ++it_array){
                 Variable* temp = it_array->second;

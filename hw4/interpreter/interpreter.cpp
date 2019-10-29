@@ -52,25 +52,14 @@ Variable* Interpreter :: parse_variable(string n){ // parse variable
         end = n.size()-1;
         string name = n.substr(0, start);
         NumericExpression* index = parse_numeric_expression(n.substr(start+1, end-start-1));
-        // if (index->is_infinite()){ // check division by 0 error
-        //     if (arr_variable_map.find(name+"inf") != arr_variable_map.end()){
-        //         return arr_variable_map[name+"inf"];
-        //     }
-        //     ArrayVariable* temp =  new ArrayVariable(name, index, 0);
-        //     arr_variable_map[name+"inf"] = temp; // division by 0, set to "inf"
-        //     if (inf_index_arrays.find(line_number) == inf_index_arrays.end()){
-        //         inf_index_arrays[line_number] = temp; // store the array in map
-        //     }
-        //     return temp;
-        // }
         string string_index = index->format();
-        // return the previous array variable if both name and index are equal
-        // if (arr_variable_map.find(name+string_index) != arr_variable_map.end()){
-        //     return arr_variable_map[name+string_index]; // if variable already exist
-        // }
+        if (arr_variable_map.find(name+string_index+to_string(line_number)) != arr_variable_map.end()){
+            index_map[line_number].push_back(index);
+            return arr_variable_map[name+string_index+to_string(line_number)];
+        }
         ArrayVariable* temp =  new ArrayVariable(name, index, 0);
         arr_variable_map[name+string_index+to_string(line_number)] = temp; // store it in map
-        index_map[line_number].push_back(temp->get_index());
+        index_map[line_number].push_back(index);
         return temp;
     }
     else{
