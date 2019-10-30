@@ -12,7 +12,8 @@ public:
     virtual std::string format() = 0;
     virtual int get_value() = 0; // get value
     virtual bool is_infinite() = 0; // get division by 0 error while parsing
-    virtual bool check_divide() = 0; // pure virtual
+    // pure virtual, check the index of an array variable before reads its value
+    virtual bool check_divide() = 0;
 };
 
 class Constant : public NumericExpression{
@@ -20,8 +21,8 @@ public:
 	Constant(int val);
 	std::string format();
     int get_value();
-    bool check_divide(){return false;}
-    bool is_infinite(){return false;}
+    bool check_divide(){return false;} // only division expression returns true
+    bool is_infinite(){return false;} // only division by 0 returns true
 private:
 	int val_;
 };
@@ -47,7 +48,7 @@ class IntegerVariable : public Variable{
 public:
 	IntegerVariable(std::string name, int val);
 	std::string format();
-    bool is_infinite(){return false;}
+    bool is_infinite(){return false;} // only division by 0 returns true
     bool is_arr(){return false;}
 };
 
@@ -57,7 +58,7 @@ public:
 	virtual ~ArrayVariable();
     std::string format();
     NumericExpression* get_index();
-    bool is_infinite(){return index_->is_infinite();}
+    bool is_infinite(){return index_->is_infinite();} // only division by 0 returns true
     bool is_arr(){return true;}
 private:
 	NumericExpression *index_;
@@ -69,7 +70,7 @@ public:
     ~AdditionExpression();
     int get_value();
     std::string format();
-    bool check_divide(){return false;}
+    bool check_divide(){return false;}// only division expression returns true
     bool is_infinite();
 private:
     NumericExpression* left_;
@@ -82,7 +83,7 @@ public:
     ~SubtractionExpression();
     int get_value();
     std::string format();
-    bool check_divide(){return false;}
+    bool check_divide(){return false;}// only division expression returns true
     bool is_infinite();
 private:
     NumericExpression* left_;
@@ -95,7 +96,7 @@ public:
     ~MultiplicationExpression();
     int get_value();
     std::string format();
-    bool check_divide(){return false;}
+    bool check_divide(){return false;}// only division expression returns true
     bool is_infinite();
 private:
     NumericExpression* left_;
@@ -108,7 +109,7 @@ public:
     ~DivisionExpression();
     int get_value();
     std::string format();
-    bool check_divide(){return true;}
+    bool check_divide(){return true;}// only division expression returns true
     bool is_infinite();
 private:
     NumericExpression* left_;

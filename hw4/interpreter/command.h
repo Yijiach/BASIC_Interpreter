@@ -12,8 +12,8 @@ public:
     int get_line();
     virtual std::string get_name() = 0; // pure virtual
     virtual Variable* get_var(){return NULL;}
-    virtual NumericExpression* get_nexp(){return NULL;}
-    virtual BooleanExpression* get_bexp(){return NULL;}
+    virtual NumericExpression* get_nexp(){return NULL;} // virtual
+    virtual BooleanExpression* get_bexp(){return NULL;} // virtual
     virtual int get_jline(){return 0;} // not pure virtual
 protected:
 	int line_; // line number
@@ -25,7 +25,7 @@ public:
 	virtual ~Print();
 	std::string format();
 	std::string get_name();
-	NumericExpression* get_nexp();
+	NumericExpression* get_nexp(); // returns numeric expression
 private:
 	NumericExpression* nexp_;
 };
@@ -37,7 +37,7 @@ public:
 	std::string format();
 	std::string get_name();
 	Variable* get_var();
-	NumericExpression* get_nexp();
+	NumericExpression* get_nexp(); // returns numeric expression
 private:
 	Variable* var_;
 	NumericExpression* nexp_;
@@ -59,11 +59,11 @@ public:
 	virtual ~IfThen();
 	std::string format();
 	std::string get_name();
-	BooleanExpression* get_bexp();
+	BooleanExpression* get_bexp(); // returns boolean expression
 	int get_jline();
 private:
 	BooleanExpression* bexp_;
-	int jline_;
+	int jline_; // line number jumps to
 };
 
 class GoSub : public Command{
@@ -73,7 +73,7 @@ public:
 	std::string get_name();
 	int get_jline();
 private:
-	int jline_;
+	int jline_; // line number jumps to
 };
 
 class Return : public Command{

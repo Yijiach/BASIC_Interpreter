@@ -19,8 +19,8 @@ int main(int argc, char* argv[]) {
     try{
         interpreter.execute(); // code executions
     } catch(exception& e) {
-        cout << "Error in Line " << interpreter.get_line_n() << ": ";
-        cout << e.what() << endl;
+        cout << "Error in Line " << interpreter.get_line_n() << ": "; // cout line number first
+        cout << e.what() << endl; // cout error message
     } 
     return 0;
 }

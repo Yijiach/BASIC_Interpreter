@@ -7,7 +7,7 @@ Print :: Print(int line, NumericExpression* nexp) : Command(line){
 	line_ = line;
 	nexp_ = nexp;
 }
-Print :: ~Print(){
+Print :: ~Print(){//don't delete in destructos, delete in interperter
 	//delete this->nexp_;
 }
 string Print :: format(){
@@ -19,7 +19,7 @@ Let :: Let(int line, Variable* var, NumericExpression* nexp) : Command(line){
 	var_ = var;
 	nexp_ = nexp;
 }
-Let :: ~Let(){
+Let :: ~Let(){//don't delete in destructos, delete in interperter
 	// delete this->var_;
 	// delete this->nexp_;
 }
@@ -41,7 +41,7 @@ IfThen :: IfThen(int line, BooleanExpression* bexp, int jline) : Command(line){
 	bexp_ = bexp;
 	jline_ = jline;
 }
-IfThen :: ~IfThen(){
+IfThen :: ~IfThen(){//don't delete in destructos, delete in interperter
 	//delete this->bexp_;
 }
 string IfThen :: format(){
@@ -72,7 +72,7 @@ int Command :: get_line(){
 	return line_;
 }
 
-// get name
+// get name of the command
 string Print :: get_name(){
 	return "PRINT";
 }
@@ -95,7 +95,7 @@ string End :: get_name(){
 	return "END";
 }
 
-// get nexp, vars, bexp, jline
+// get nexp, vars, bexp, jline stored in commands
 NumericExpression* Print :: get_nexp(){
 	return nexp_;
 }

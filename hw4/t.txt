@@ -1,0 +1,42 @@
+1 PRINT   XYZ     [123]
+2 LET XYZ 123
+3 LET XYZ[      1] 123
+4 LET A 3
+30 PRINT (   1 + XYZ[    123])
+40 PRINT AB[    (      (      123 * A) / 3)]
+50 LET A[B] 1
+60 PRINT X[(1 * A)]
+61 LET XYZ[((1 / A[B]) + (-4 * 5))] (30 * (A + (B * (-1 * A[1]))))
+62 LET XYZ[ABC[(1 * 5)]] ABC[(-1 - -1)]
+63 PRINT (1 + XYZ[ABC[(1 * 5)]])
+70 PRINT (123 * XYZ[4])
+80 PRINT A[B[C]]
+81 LET XYZ[35] ---123
+90 PRINT 1
+91 IF 2 < A THEN 92
+92 IF 2 > -1 THEN 93
+93 IF XYZ      [       35] = -123 THEN        94
+94 IF      ASDF     = JKL[(1 * 5)] THEN 99
+99 PRINT      99
+100 PRINT -123456
+110 PRINT (123 - 40)
+120 PRINT (123 * (123 + 123))
+200 PRINT (1 - -10)
+210 PRINT (-5 - -5)
+220 PRINT ((40 * 8) - (12 / (4 + 1)))
+230         PRINT ((-1 - -1) / ((12 + 5) + 1))
+300 PRINT ((3 + 5) / (3 + 5))
+301 GOTO 302
+302 GOTO 310
+310      PRINT ((       ((      ((1 + 1) + 1) + 1) + 1) + 1) + 1)
+320 PRINT (      A - 4)
+550 PRINT (     5 * (   10 - A))
+551 LET X 1
+900 PRINT (A - 4)
+1000 PRINT (5 * (   10 - (X / (4 + ABC))))
+1010 PRINT (    ((( ((   123 + ABC) + 1) + Y) + 1) + Z) + 1)
+6000 PRINT (    (   123 + ABC) * (3 / X))
+6100  GOSUB     6200
+6200  GOSUB     6290
+6290 PRINT  9999
+6310 RETURN

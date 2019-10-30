@@ -5,7 +5,7 @@ Constant :: Constant(int val) : val_(val){}
 string Constant :: format(){
 	return to_string(val_);
 }
-
+// variable base class constructor
 Variable :: Variable(string name, int val) : NumericExpression(){
     name_ = name;
     val_ = val;
@@ -23,7 +23,7 @@ Variable(name, val) {
 	index_ = index;
     val_ = val;
 }
-ArrayVariable :: ~ArrayVariable(){
+ArrayVariable :: ~ArrayVariable(){ // don't delete in destructor, delete in interpreter
     //delete this->index_;
 }  
 string ArrayVariable :: format(){
@@ -35,7 +35,7 @@ NumericExpression(){
     left_ = left;
     right_ = right;
 } 
-AdditionExpression::~AdditionExpression() {
+AdditionExpression::~AdditionExpression() { // don't delete in destructor, delete in interpreter
     // delete this->left_;
     // delete this->right_;
 }
@@ -48,7 +48,7 @@ NumericExpression(){
     left_ = left;
     right_ = right;
 } 
-SubtractionExpression::~SubtractionExpression() {
+SubtractionExpression::~SubtractionExpression() {// don't delete in destructor, delete in interpreter
     // delete this->left_;
     // delete this->right_;
 }
@@ -62,7 +62,7 @@ NumericExpression(){
     left_ = left;
     right_ = right;
 } 
-MultiplicationExpression::~MultiplicationExpression() {
+MultiplicationExpression::~MultiplicationExpression() {// don't delete in destructor, delete in interpreter
     // delete this->left_;
     // delete this->right_;
 }
@@ -75,7 +75,7 @@ NumericExpression(){
     left_ = left;
     right_ = right;
 } 
-DivisionExpression::~DivisionExpression() {
+DivisionExpression::~DivisionExpression() {// don't delete in destructor, delete in interpreter
     // delete this->left_;
     // delete this->right_;
 }
@@ -110,7 +110,7 @@ int DivisionExpression :: get_value(){
             to_string(left_->get_value())+", "+right_->format()+" = "+
             to_string(right_->get_value())+"."); // division by 0 error
     }
-    return left_->get_value() / right_->get_value();
+    return left_->get_value() / right_->get_value(); // return value if no division by 0 error
 }
 
 // get name function

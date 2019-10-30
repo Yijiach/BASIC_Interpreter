@@ -32,7 +32,7 @@ Constant* Interpreter :: parse_constant(string n){ // parse constant
     stringstream s(n);
     int val = 0;
     s >> val;
-    if (const_map.find(val) != const_map.end()){
+    if (const_map.find(val) != const_map.end()){ // check if already exist
         return const_map[val];
     }
     Constant* temp = new Constant(val);
@@ -46,7 +46,7 @@ Variable* Interpreter :: parse_variable(string n){ // parse variable
         for (unsigned int i=0; i<n.size(); i++){
             if (n[i] == '['){
                 start = i;
-                break;
+                break; // break out of the loop as soon as finding the first "["
             }
         }
         end = n.size()-1;
@@ -54,12 +54,12 @@ Variable* Interpreter :: parse_variable(string n){ // parse variable
         NumericExpression* index = parse_numeric_expression(n.substr(start+1, end-start-1));
         string string_index = index->format();
         if (arr_variable_map.find(name+string_index+to_string(line_number)) != arr_variable_map.end()){
-            index_map[line_number].push_back(index);
+            index_map[line_number].push_back(index); // check if already exist
             return arr_variable_map[name+string_index+to_string(line_number)];
         }
         ArrayVariable* temp =  new ArrayVariable(name, index, 0);
         arr_variable_map[name+string_index+to_string(line_number)] = temp; // store it in map
-        index_map[line_number].push_back(index);
+        index_map[line_number].push_back(index); // store index on the same line into vectors
         return temp;
     }
     else{
@@ -77,15 +77,15 @@ NumericExpression* Interpreter :: parse_numeric_expression(string n){
     if ((n[0] == '-') || (n[0] == '0') || (n[0] == '1') || (n[0] == '1')
         || (n[0] == '2') || (n[0] == '3') || (n[0] == '4') || (n[0] == '5')
         || (n[0] == '6') || (n[0] == '7') || (n[0] == '8') || (n[0] == '9')){
-        return parse_constant(n);
+        return parse_constant(n); // return constant
     }
-    else if (n[0] != '('){
+    else if (n[0] != '('){ // check if it is numeric expression
         return parse_variable(n);
     }
     else{
         bool most_inside = true;
         for (unsigned int i=1; i<n.size(); i++){
-            if (n[i] == '('){
+            if (n[i] == '('){ // check if it is base case
                 most_inside = false;
             }
         }
@@ -202,7 +202,7 @@ NumericExpression* Interpreter :: parse_numeric_expression(string n){
                     is_multiply = true;
                     break;
                 }
-                else if ((n[i] == '-') && (left_count == right_count+1) && (i != 1)){
+                else if ((n[i] == '-') && (left_count == right_count+1) && (i != 1)){ // (i!=1)
                     operator_index = i;
                     is_subtract = true;
                     break; // edge case (-1 - -1)
@@ -412,13 +412,13 @@ void Interpreter::parse(istream& in) { // parse command and store them in vector
             // parse the correct variable and numeric expression
             Variable* var = parse_variable(variable);
             NumericExpression* nexp = parse_numeric_expression(numeric_expression);
-            Let* newCommand = new Let(line_number, var, nexp);
+            Let* newCommand = new Let(line_number, var, nexp); // create new command
             entire_program.push_back(newCommand);
         }
         else if (command_name == "GOTO"){
             int jline;
             stream >> jline;
-            GoTo* newCommand = new GoTo(line_number, jline);
+            GoTo* newCommand = new GoTo(line_number, jline); // create new command
             entire_program.push_back(newCommand);
         }
         else if (command_name == "IF"){
@@ -431,13 +431,13 @@ void Interpreter::parse(istream& in) { // parse command and store them in vector
             }
             stream >> jline;
             BooleanExpression* bexp = parse_boolean_expression(boolean_expression);
-            IfThen* newCommand= new IfThen(line_number, bexp, jline);
+            IfThen* newCommand= new IfThen(line_number, bexp, jline); // create new command
             entire_program.push_back(newCommand);
         }
         else if (command_name == "GOSUB"){
             int jline;
             stream >> jline;
-            GoSub* newCommand = new GoSub(line_number, jline);
+            GoSub* newCommand = new GoSub(line_number, jline); // create new command
             entire_program.push_back(newCommand);
         }
         else if (command_name == "RETURN"){
@@ -445,7 +445,7 @@ void Interpreter::parse(istream& in) { // parse command and store them in vector
             entire_program.push_back(newCommand);
         }
         else if (command_name == "END"){
-            End* newCommand = new End(line_number);
+            End* newCommand = new End(line_number); // create new command
             entire_program.push_back(newCommand);
         }
     }
