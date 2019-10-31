@@ -1,6 +1,6 @@
 Analyzing your Code (15%)
 
-definitions of all the variables used in this analysis:
+Definitions of all the variables used in this analysis:
 n: Total number of commands.
 m: Total number of individual variables or constants in a numeric expression. (For example in (1+1), m would be 2, and in (X+Y+Z), m would be 3.
 
@@ -17,5 +17,5 @@ m: Total number of individual variables or constants in a numeric expression. (F
 3. 	Both take θ(1)
 	My high level approach was to use the pointer that points to a variable object stored in a line of command and get its value or set its value. The get_value() function was used in line 28 in execution.cpp. It simply returns the value of the variable, which takes θ(1) time. The set_value() function was used in line 38 in execution.cpp. The set_value() function simply overwrites the value with the input integer, which takes θ(1) to complete.
 
-4. 	Get value takes θ(1), set value takes θ(log(n)).
-	My high level approach for get value was the same as the method I used for integer variables: Use the pointer that points to a variable object stored in a line of command and get its value. The get_value() function was used in line 28 in execution.cpp. It simply returns the value of the variable, which takes θ(1) time. My high level apporach for set value was first set the value for the variable object. Then I also updated the map that maps from name+index to variable values. This part was implemented in line 41-44 in execution.cpp. Setting the value for array variables (lin 41 in execution.cpp) takes the same amount of time as for integer variables, which was θ(1). Updating the map (line 42-44 in execution.cpp) takes θ(log(n)). Combine these two, the total time needed was θ(log(n)).
+4. 	Get value takes θ(1), set value takes θ(log(m)).
+	My high level approach for get value was the same as the method I used for integer variables: Use the pointer that points to a variable object stored in a line of command and get its value. The get_value() function was used in line 28 in execution.cpp. It simply returns the value of the variable, which takes θ(1) time. My high level apporach for set value was first set the value for the variable object. Then I also updated the map that maps from name+index to variable values. This part was implemented in line 41-44 in execution.cpp. Setting the value for array variables (lin 41 in execution.cpp) takes the same amount of time as for integer variables, which was θ(1). Updating the map (line 42-44 in execution.cpp) takes θ(log(m)). Combine these two, the total time needed was θ(log(m)).
