@@ -4,19 +4,19 @@ definitions of all the variables used in this analysis:
 n: Total number of commands.
 m: Total number of individual variables or constants in a numeric expression. (For example in (1+1), m would be 2, and in (X+Y+Z), m would be 3.
 
-1. 	O(log(n))
+1. 	θ(log(n))
 	GOTO: implemented in line 61 in execution.cpp.
 	GOSUB: implemented in line 70 in execution.cpp.
 	IF: implemented in line 85 in execution.cpp.
-	For all three operations, the high level approach was to use the line number parsed before as key find a particular element in a map where I stored all of my commands. I used map.find() function to figure which line of code should I go to. This takes O(log(n)) time.
+	For all three operations, the high level approach was to use the line number parsed before as key find a particular element in a map where I stored all of my commands. I used map.find() function to figure which line of code should I go to. This takes θ(log(n)) time.
 
-2. 	O(log(n))
+2. 	θ(log(n))
 	RETURN: implemented in line 18 in execution.cpp.
-	The high level approach I used was to fist find the top element in the stack where I stored all of the line numbers GOSUB is from. Then I used that line number as key to find a particular element in a map where I stored all of my commands. The function I used to find the origin line of GOSUB is stack.top() which takes O(1) time and the function I used to find the line of command was map.find(), which takes O(log(n)) time. Combine these two, the total time would be O(log(n)).
+	The high level approach I used was to fist find the top element in the stack where I stored all of the line numbers GOSUB is from. Then I used that line number as key to find a particular element in a map where I stored all of my commands. The function I used to find the origin line of GOSUB is stack.top() which takes O(1) time and the function I used to find the line of command was map.find(), which takes O(log(n)) time. Combine these two, the total time would be θ(log(n)).
 
-3. 	Both take O(1)
-	The first half was implemented in line 95-97 in arithmetic.cpp. The get_value() function simply returns the value of the variable, therefore, takes O(1) time.
-	The second half was inplemented in line 87-89 in arithmetic.cpp. The set_value() function simply overwrites the value with the input integer, which takes O(1) to complete.
+3. 	Both take θ(1)
+	The first half was implemented in line 95-97 in arithmetic.cpp. The get_value() function simply returns the value of the variable, therefore, takes θ(1) time.
+	The second half was inplemented in line 87-89 in arithmetic.cpp. The set_value() function simply overwrites the value with the input integer, which takes θ(1) to complete.
 
-4. 	Both take O(1)
-	The function I used was the same for both array and integer variables. Therefore, the time it takes would be the same as above, which is O(1).
+4. 	Both take θ(1)
+	The function I used was the same for both array and integer variables. Therefore, the time it takes would be the same as above, which is θ(1).
