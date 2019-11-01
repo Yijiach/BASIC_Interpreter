@@ -40,7 +40,7 @@ private:
     std::stack<int> origin_line; // origin of gosub lines
     int line_n; // stores line number for error message
     int line_number; // line number used while parsing
-    std::map<int, std::vector<NumericExpression*>> index_map; // infinite index arrays for error checking
+    std::map<int, std::vector<NumericExpression*>> index_map; // map from line number to vector of indexes
 };
 
 #endif
