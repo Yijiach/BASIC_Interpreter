@@ -1,3 +1,3 @@
-# CSCI 104 HW05 Yijia Chen
+# CSCI 104 HW05   Yijia Chen
 
-- **Problem 1 in file hw5.pdf.**
+- **Problem 1 in file named hw5.pdf.**
