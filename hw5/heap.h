@@ -19,13 +19,21 @@ public:
     H.clear();
   }
 
-  int add (T item, int priority);
+  int add (T item, int priority){
     /* adds the item to the heap, with the given priority. 
       multiple identical items can be in the heap simultaneously. 
       Returns the number of times add has been called prior to this
       call (for use with the update function).*/
+    Node* temp = new Node;
+    temp->name = item;
+    temp->priority = priority;
+    H.push_back(temp);
+    BubbleUp(H.size()-1);
+    return 0; ///////////////////////////////////////
+  }
 
-  const T & peek () const{
+  //const T & peek () const{
+  T& peek(){
     /* returns the element with smallest priority.
       If two elements have the same priority, use operator< on the 
       T data, and return the one with smaller data.*/
@@ -36,8 +44,8 @@ public:
     /* removes the element with smallest priority, with the same tie-breaker
       as peek. */
     int index = tie_breaker(H.front()->priority);
-    swap(H[index], H[0]); // swap this node with root node first
-    swap(H[0], H[H.size()-1]); // swap this node with the last node
+    std::swap(H[index], H[0]); // swap this node with root node first
+    std::swap(H[0], H[H.size()-1]); // swap this node with the last node
     delete H[H.size()-1]; // delete the node
     H.pop_back(); // remove the last spot
     TrickleDown(0);
@@ -76,9 +84,11 @@ private:
     int smallest_priority = H[child(i, 1)]->priority; // first child's priority
     int index = 0;
     for (int k=1; k<=d; k++){
-      if (H[child(i, k)]->priority < smallest_priority){
-        smallest_priority = H[child(i, k)]->priority;
-        index = child(i, k);
+      if (child(i, k) < (int)H.size()){
+        if (H[child(i, k)]->priority < smallest_priority){
+          smallest_priority = H[child(i, k)]->priority;
+          index = child(i, k);
+        }
       }
     }
     return index;
@@ -99,8 +109,8 @@ private:
     for (int i=0; i<(int)ties.size(); i++){ // finds smallest data 
       if (ties[i]->name < smallest){
         smallest = ties[i]->name;
-        for (int j=0; j<H.size(); j++){ // finds index
-          if (H[j]->name = smallest){
+        for (int j=0; j<(int)H.size(); j++){ // finds index
+          if (H[j]->name == smallest){
             index = j;
           }
         }
@@ -111,14 +121,14 @@ private:
 
   void BubbleUp(int i){ // adjust the vector after add()
     if ((i > 0) && (H[i]->priority < H[parent(i)]->priority)){
-      swap(H[i], H[parent(i)]);
+      std::swap(H[i], H[parent(i)]);
       BubbleUp(parent(i));
     }
   }
 
   void TrickleDown(int i){ // adjust the vector after remove()
     if ((i < (int)H.size()) && (H[i]->priority > H[smallest_child(i)]->priority)){
-      swap(H[i], H[smallest_child(i)]);
+      std::swap(H[i], H[smallest_child(i)]);
       TrickleDown(smallest_child(i));
     }
   }
