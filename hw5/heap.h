@@ -1,5 +1,4 @@
 #include <vector>
-#include <stdexcept>
 #include <iostream>
 
 template <typename T>
@@ -29,7 +28,7 @@ public:
     temp->priority = priority;
     H.push_back(temp);
     BubbleUp(H.size()-1);
-    return 0; ///////////////////////////////////////
+    return 0; ///////////////////////////////////////////////////////
   }
 
   //const T & peek () const{
@@ -37,15 +36,13 @@ public:
     /* returns the element with smallest priority.
       If two elements have the same priority, use operator< on the 
       T data, and return the one with smaller data.*/
-    return H[tie_breaker(H.front()->priority)]->name;
+    return H[0]->name;
   }
 
   void remove (){
     /* removes the element with smallest priority, with the same tie-breaker
       as peek. */
-    int index = tie_breaker(H.front()->priority);
-    std::swap(H[index], H[0]); // swap this node with root node first
-    std::swap(H[0], H[H.size()-1]); // swap this node with the last node
+    swap_value(H[0], H[H.size()-1]); // swap this node with the last node
     delete H[H.size()-1]; // delete the node
     H.pop_back(); // remove the last spot
     TrickleDown(0);
@@ -61,6 +58,23 @@ public:
     if (H.empty()) return true;
     return false;
   }
+
+
+
+
+
+
+void get_H(){
+  for (int i=0; i<(int)H.size(); i++){
+    std::cout << H[i]->name << std::endl;
+  }
+}
+
+
+
+
+
+
 
 private:
   // whatever you need to naturally store things.
@@ -82,36 +96,20 @@ private:
 
   int smallest_child(int i){ // returns index of the child with smallest priority
     int smallest_priority = H[child(i, 1)]->priority; // first child's priority
-    int index = 0;
+    T name; // used to break tie
+    int index = child(i, 1);
     for (int k=1; k<=d; k++){
       if (child(i, k) < (int)H.size()){
         if (H[child(i, k)]->priority < smallest_priority){
           smallest_priority = H[child(i, k)]->priority;
           index = child(i, k);
+          name = H[child(i, k)]->name;
         }
-      }
-    }
-    return index;
-  }
-
-  int tie_breaker(int priority){ // returns smallest data's index
-    std::vector<Node*> ties;
-    T smallest;
-    int index;
-    for (int i=0; i<(int)H.size(); i++){
-      if (H[i]->priority == priority){
-        ties.push_back(H[i]);
-      }
-    }
-    // return the root node if it's the only one with smallest priority
-    if (ties.size() == 1) return 0;
-    smallest = ties[0]->name;
-    for (int i=0; i<(int)ties.size(); i++){ // finds smallest data 
-      if (ties[i]->name < smallest){
-        smallest = ties[i]->name;
-        for (int j=0; j<(int)H.size(); j++){ // finds index
-          if (H[j]->name == smallest){
-            index = j;
+        else if (H[child(i, k)]->priority == smallest_priority){ // tie breaker
+          if (H[child(i, k)]->name < name){
+            smallest_priority = H[child(i, k)]->priority;
+            index = child(i, k);
+            name = H[child(i, k)]->name;
           }
         }
       }
@@ -121,15 +119,40 @@ private:
 
   void BubbleUp(int i){ // adjust the vector after add()
     if ((i > 0) && (H[i]->priority < H[parent(i)]->priority)){
-      std::swap(H[i], H[parent(i)]);
+      swap_value(H[i], H[parent(i)]);
       BubbleUp(parent(i));
+    }
+    else if ((i > 0) && (H[i]->priority == H[parent(i)]->priority)){
+      if (H[i]->name < H[parent(i)]->name){
+        swap_value(H[i], H[parent(i)]);
+        BubbleUp(parent(i));
+      }
     }
   }
 
   void TrickleDown(int i){ // adjust the vector after remove()
-    if ((i < (int)H.size()) && (H[i]->priority > H[smallest_child(i)]->priority)){
-      std::swap(H[i], H[smallest_child(i)]);
-      TrickleDown(smallest_child(i));
+    if (child(i, 1) < (int)H.size()){ // else if leaf node, done
+      if ((i < (int)H.size()) && (H[i]->priority > H[smallest_child(i)]->priority)){
+        swap_value(H[i], H[smallest_child(i)]);
+        TrickleDown(smallest_child(i));
+      }
+      else if ((i < (int)H.size()) && (H[i]->priority == H[smallest_child(i)]->priority)){
+        if (H[i]->name > H[smallest_child(i)]->name){
+          swap_value(H[i], H[smallest_child(i)]);
+          TrickleDown(smallest_child(i));
+        }
+      }
     }
+  }
+
+  void swap_value(Node* node1, Node* node2){ // swap function, deep copy
+    T name1 = node1->name;
+    T name2 = node2->name;
+    int priority1 = node1->priority;
+    int priority2 = node2->priority;
+    node1->name = name2;
+    node2->name = name1;
+    node1->priority = priority2;
+    node2->priority = priority1;
   }
 };
