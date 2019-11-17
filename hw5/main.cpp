@@ -10,9 +10,16 @@ int main(int argc, char* argv[]){
 	myHeap.add("d", 2);
 	myHeap.add("e", 1);
 	myHeap.add("b", 4);
+	myHeap.add("x", 1);
+	myHeap.add("y", 1);
+	myHeap.add("z", 1);
 
-
-
+	cout << myHeap.peek() << endl;
+	myHeap.remove();
+	cout << myHeap.peek() << endl;
+	myHeap.remove();
+	cout << myHeap.peek() << endl;
+	myHeap.remove();
 	cout << myHeap.peek() << endl;
 	myHeap.remove();
 	cout << myHeap.peek() << endl;
