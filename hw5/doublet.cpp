@@ -54,7 +54,7 @@ void build_graph(map<string, int>& index_map, vector<graph_node>& graph){
 	}
 }
 
-void search(map<string, int>& index_map, vector<graph_node>& graph, int source_index, string target){
+void search(map<string, int>& index_map, vector<graph_node>& graph, int source_index, string& target){
 	bool found = false;
 	int expansions = 0; // number of expansions
 	bool visited[graph.size()]; // keep track of if visited
@@ -89,7 +89,7 @@ void search(map<string, int>& index_map, vector<graph_node>& graph, int source_i
 			int index = graph[index_map[curr_word]].neighbors[i]; // index in graph
 			int h = graph[index].h;
 			//if (!visited[index] && (g[index_map[curr_word]]+1 < g[index] || g[index] == 0)){
-			if (!visited[index]){
+			if (!visited[index]){ // if not visited, push node to the heap
 				g[index] = g[index_map[curr_word]] + 1; // updates g value if finds a shorter path
 				visited[index] = true;
 				int priority = (g[index] + h) * (graph[index].word.size() + 1) + h;
