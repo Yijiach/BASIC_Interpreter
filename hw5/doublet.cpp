@@ -88,7 +88,8 @@ void search(map<string, int>& index_map, vector<graph_node>& graph, int source_i
 		for (int i=0; i<(int)graph[index_map[curr_word]].neighbors.size(); i++){
 			int index = graph[index_map[curr_word]].neighbors[i]; // index in graph
 			int h = graph[index].h;
-			if (!visited[index] && (g[index_map[curr_word]]+1 < g[index] || g[index] == 0)){
+			//if (!visited[index] && (g[index_map[curr_word]]+1 < g[index] || g[index] == 0)){
+			if (!visited[index]){
 				g[index] = g[index_map[curr_word]] + 1; // updates g value if finds a shorter path
 				visited[index] = true;
 				int priority = (g[index] + h) * (graph[index].word.size() + 1) + h;
