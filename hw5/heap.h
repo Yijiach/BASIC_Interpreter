@@ -4,11 +4,11 @@
 template <typename T>
 class MinHeap {
 public:
-  MinHeap (int d){
+  MinHeap (int d_){
     /* Constructor that builds a d-ary Min Heap
       This should work for any d >= 2,
       but doesn't have to do anything for smaller d.*/
-    this->d = d;
+    this->d = d_;
     n = 0;
   }
 
@@ -30,7 +30,7 @@ public:
     temp->index = n;
     H.push_back(temp);
     I.push_back((int)H.size()-1);
-    BubbleUp(H.size()-1);
+    BubbleUp((int)H.size()-1);
     n++; // increase n
     return n-1; // num of adds prior to this call
   }
@@ -169,10 +169,10 @@ private:
     node2->index = index1;
   }
 
-  void swap_index(std::vector<int>& I, int a, int b){ // swap the index of two nodes
-    int temp1 = I[a];
-    int temp2 = I[b];
-    I[a] = temp2;
-    I[b] = temp1;
+  void swap_index(std::vector<int>& I_, int a, int b){ // swap the index of two nodes
+    int temp1 = I_[a];
+    int temp2 = I_[b];
+    I_[a] = temp2;
+    I_[b] = temp1;
   }
 };
