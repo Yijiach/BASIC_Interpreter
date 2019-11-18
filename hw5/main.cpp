@@ -5,30 +5,24 @@ using namespace std;
 int main(int argc, char* argv[]){
 	MinHeap<string> myHeap(3);
 
-	myHeap.add("c", 3);
-	myHeap.add("a", 5);
-	myHeap.add("d", 2);
-	myHeap.add("e", 1);
-	myHeap.add("b", 4);
-	myHeap.add("x", 1);
-	myHeap.add("y", 1);
-	myHeap.add("z", 1);
+	myHeap.add("A", 11);
+	myHeap.add("B", 12);
+	myHeap.add("C", 13);
+	myHeap.add("D", 14);
+	myHeap.add("E", 15);
+	myHeap.add("F", 16);
+	myHeap.add("G", 17);
+	myHeap.add("H", 18);
+	myHeap.update(4, 9);
+	cout << myHeap.peek() << endl;//E
+	myHeap.update(1, 8);
+	cout << myHeap.peek() << endl;//B
+	myHeap.remove();
+	cout << myHeap.peek() << endl;//E
+	myHeap.update(1,9);
 
-	cout << myHeap.peek() << endl;
-	myHeap.remove();
-	cout << myHeap.peek() << endl;
-	myHeap.remove();
-	cout << myHeap.peek() << endl;
-	myHeap.remove();
-	cout << myHeap.peek() << endl;
-	myHeap.remove();
-	cout << myHeap.peek() << endl;
-	myHeap.remove();
-	cout << myHeap.peek() << endl;
-	myHeap.remove();
-	cout << myHeap.peek() << endl;
-	myHeap.remove();
-	cout << myHeap.peek() << endl;
+
+
 
 	return 0;
 }

@@ -78,21 +78,6 @@ public:
     return false;
   }
 
-
-
-
-
-// void get_H(){
-//   for (int i=0; i<(int)H.size(); i++){
-//     std::cout << H[i]->name << " " << H[i]->index << 
-//     " " << I[H[i]->index] << " " << H[i]->priority << std::endl;
-//   }
-// }
-
-
-
-
-
 private:
   // whatever you need to naturally store things.
   struct Node{ // stores each node
