@@ -34,10 +34,10 @@ void upper(string& n){ // change n to all uppercases
 	}
 }
 
-// build the graph explicitly
+// build the graph
 void build_graph(map<string, int>& index_map, vector<graph_node>& graph){
 	for (int i=0; i<(int)graph.size(); i++){
-		string w = graph[i].word; // itrate through each word
+		string w = graph[i].word; // iterate through each word
 		for (int j=0; j<(int)w.size(); j++){
 			string s = w; // stores temperary word that is changed by 1 char
 			for (char k='A'; k<='Z'; k++){
@@ -54,6 +54,7 @@ void build_graph(map<string, int>& index_map, vector<graph_node>& graph){
 	}
 }
 
+// A* search
 void search(map<string, int>& index_map, vector<graph_node>& graph, int source_index, string& target){
 	bool found = false;
 	int expansions = 0; // number of expansions
@@ -78,7 +79,7 @@ void search(map<string, int>& index_map, vector<graph_node>& graph, int source_i
 
 		if (curr_word == target){ // if found
 			found = true;
-			cout << g[index_map[curr_word]] + graph[index_map[curr_word]].h << endl;
+			cout << g[index_map[curr_word]] << endl;
 			cout << expansions << endl;
 			break;
 		}
@@ -88,15 +89,15 @@ void search(map<string, int>& index_map, vector<graph_node>& graph, int source_i
 		for (int i=0; i<(int)graph[index_map[curr_word]].neighbors.size(); i++){
 			int index = graph[index_map[curr_word]].neighbors[i]; // index in graph
 			int h = graph[index].h;
-			//if (!visited[index] && (g[index_map[curr_word]]+1 < g[index] || g[index] == 0)){
-			if (!visited[index]){ // if not visited, push node to the heap
-				g[index] = g[index_map[curr_word]] + 1; // updates g value if finds a shorter path
+			// /if (!visited[index] && (g[index_map[curr_word]]+1 < g[index] || g[index] == 0)){
+			if (!visited[index]){
+				g[index] = g[index_map[curr_word]] + 1;
 				visited[index] = true;
 				int priority = (g[index] + h) * (graph[index].word.size() + 1) + h;
 				n_th[graph[index].word] = Heap.add(graph[index].word, priority); // add into heap
 			}
-			else if (visited[index] && g[index_map[curr_word]]+1 < g[index]){ // update if visited
-				g[index] = g[index_map[curr_word]] + 1;
+			else if (visited[index] && g[index_map[curr_word]]+1 < g[index]){
+				g[index] = g[index_map[curr_word]] + 1; // updates g value if finds a shorter path
 				int priority = (g[index] + h) * (graph[index].word.size() + 1) + h;
 				Heap.update(n_th[graph[index].word], priority);
 			}
@@ -118,9 +119,8 @@ int main(int argc, char* argv[]){
 	upper(source);
 	upper(target);
 
-	if (source == target || source.size() != target.size()){ // no transformation
-		cout << "No transformation" << endl;
-		cout << 0 << endl;
+	if (source == target){
+		cout << 0 << endl << 0 << endl;
 		return 0;
 	}
 
@@ -136,14 +136,14 @@ int main(int argc, char* argv[]){
 	string line; // each line
 	string w; //each word
 	int index = 0; // keep track of index
-	int source_index = 0; // finds where the source word is
+	int source_index = -1; // finds where the source word is
 	for (int i=0; i<n; i++){
 		getline(File, line);
 		if (line == "") continue; // skip if empty line
 		stringstream ss(line);
 		ss >> w;
 		upper(w); // make it all uppercase first
-		if (w.size() != target.size()) continue; // skip if different in size
+		if (w.size() != source.size()) continue; // skip if different in size
 
 		int h = get_heuristic(w, target);
 		graph_node temp(w, h);
@@ -152,6 +152,11 @@ int main(int argc, char* argv[]){
 		if (w == source) source_index = index;
 		index++; // increment index
 	}
+
+	if (source_index == -1){ // source word not in file
+		cout << "No transformation" << endl << 0 << endl;
+		return 0;
+ 	}
 
 	build_graph(index_map, graph); // build the graph
 	search(index_map, graph, source_index, target); // perform A* search

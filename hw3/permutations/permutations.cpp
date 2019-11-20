@@ -5,6 +5,13 @@ using namespace std;
 // function prototypes
 void permutations(string in);
 void helper(string n, int index);
+void swap_char(string& n, int i, int j);
+
+void swap_char(string& n, int i, int j){
+	char temp = n[i];
+	n[i] = n[j];
+	n[j] = temp;
+}
 
 void permutations(string in){
 	if (!in.empty()){ // check if the input is empty
@@ -20,9 +27,9 @@ void helper(string n, int index){
 	}
 	else{
 		for (int i=index; i<(int)n.size(); ++i){
-			swap(n[i], n[index]); // swap 2 elements each step
+			swap_char(n, i, index); // swap 2 elements each step
 			helper(n, index+1); // recursive call
-			swap(n[i], n[index]); // swap back
+			swap_char(n, i, index); // swap back
 		}
 	}
 }
