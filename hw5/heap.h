@@ -65,9 +65,10 @@ public:
       if ((I[nth] > 0) && (H[I[nth]]->priority <= H[parent(I[nth])]->priority)){
         BubbleUp(I[nth]);
       }
-      else if ((smallest_child(I[nth]) < (int)H.size()) && 
-        (H[I[nth]]->priority >= H[smallest_child(I[nth])]->priority)){
-        TrickleDown(I[nth]);
+      else if (child(I[nth], 1) < (int)H.size()){
+        if (H[I[nth]]->priority >= H[smallest_child(I[nth])]->priority){
+          TrickleDown(I[nth]);
+        }
       }
     }
   }
