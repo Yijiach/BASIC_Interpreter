@@ -123,11 +123,6 @@ int main(int argc, char* argv[]){
 		return 0;
 	}
 
-	if (source.size() != target.size()){
-		cout << "No transformation" << endl << 0 << endl;
-		return 0;
-	}
-
 	ifstream File(argv[3]);
 	int n; // number of words in the list
 	File >> n;
