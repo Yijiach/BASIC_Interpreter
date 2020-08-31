@@ -1,4 +1,4 @@
-# CSCI 104 Student Repository
+# CSCI 104 HW4 Basic Interpreter
 
 - **Name**: Yijia Chen
 - **USC ID**: 7409704424
